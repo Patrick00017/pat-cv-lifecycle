@@ -6,7 +6,7 @@ import lightning as L
 
 class Encoder(nn.Module):
     def __init__(self):
-        super.__init__()
+        super().__init__()
         self.l1 = nn.Sequential(
             nn.Linear(28*28, 64),
             nn.ReLU(),
@@ -17,7 +17,7 @@ class Encoder(nn.Module):
     
 class Decoder(nn.Module):
     def __init__(self):
-        super.__init__()
+        super().__init__()
         self.l1 = nn.Sequential(
             nn.Linear(3, 64),
             nn.ReLU(),
@@ -28,7 +28,7 @@ class Decoder(nn.Module):
     
 class SimpleAutoEncoder(L.LightningModule):
     def __init__(self):
-        super.__init__()
+        super().__init__()
         self.encoder = Encoder()
         self.decoder = Decoder()
     def training_step(self, batch, batch_idx):

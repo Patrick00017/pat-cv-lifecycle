@@ -5,7 +5,6 @@ import lightning as L
 from models.simple_auto_encoder import SimpleAutoEncoder
 from data.common_datasets import get_mnist_train_loader
 
-
 dataloader = get_mnist_train_loader()
 
 autoencoder = SimpleAutoEncoder()
