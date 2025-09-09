@@ -5,9 +5,9 @@ import os
 
 data_root_path = "datasets/"
 
-def get_mnist_train_loader():
+def get_mnist_train_loader(batch_size: int):
     transform = transforms.ToTensor()
     dataset = MNIST(data_root_path, download=True, transform=transform)
-    train_loader = DataLoader(dataset)
+    train_loader = DataLoader(dataset, batch_size=batch_size)
     return train_loader
     

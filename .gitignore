@@ -1,5 +1,6 @@
 .vscode
 datasets
+outputs
 *.pyc
 *.txt
 src/pat_cv_lifecycle.egg-info

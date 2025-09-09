@@ -1,0 +1,14 @@
+model:
+  name: "simple-autoencoder"
+  img_width: 28
+  img_height: 28
+  encoder:
+    hidden_dim: 64
+  decoder:
+    hidden_dim: 64
+  latent_dim: 3
+train:
+  epoch: 10
+  batch_size: 128
+  lr: 0.001
+  output_dir: /home/patrick/workspace/cv/pat-cv-lifecycle/outputs
