@@ -1,0 +1,15 @@
+model:
+  name: "vit"
+  chw: [3, 32, 32]
+  num_patches: 8 # so patch_size is 224 / 16 = 14
+  hidden_dims: 256
+  n_heads: 8
+  n_encoder_blocks: 4
+  out_dims: 10 # depend on the class num in the dataset
+dataset: 
+  name: "cifar10"
+train:
+  epoch: 10
+  batch_size: 128
+  lr: 0.001
+  output_dir: /home/patrick/workspace/cv/pat-cv-lifecycle/outputs

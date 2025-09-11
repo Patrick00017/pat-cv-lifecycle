@@ -1,7 +1,11 @@
 import torch 
 import torch.nn as nn
+import torch.nn.functional as F
 import numpy as np
 from einops import rearrange, repeat
+import pytorch_lightning as pl
+from torchmetrics.functional import accuracy
+from torch.optim.lr_scheduler import OneCycleLR
 
 def patchify(images, n_patches):
     n, c, h, w = images.shape
@@ -80,10 +84,10 @@ class TransformerDecoder(nn.Module):
             x = block(x)
         return x
 
-class ViT(nn.Module):
-    def __init__(self, chw=(1, 28, 28), n_patches=7, hidden_dims=128, n_heads=8, n_blocks=4, out_dims=2):
+class ViT(pl.LightningModule):
+    def __init__(self, cfg, chw=(1, 28, 28), n_patches=7, hidden_dims=128, n_heads=8, n_blocks=4, out_dims=2):
         super(ViT, self).__init__()
-
+        # cfg is model config settings
         self.chw = chw
         self.n_patches = n_patches
         assert chw[1] % n_patches == 0, "Input shape not entirely divisible by patchsize"
@@ -121,7 +125,31 @@ class ViT(nn.Module):
             out = block(out)
         # use cls token only
         out = self.mlp(out[:, 0])
-        return out
+        return F.log_softmax(out, dim=1)
+    def training_step(self, batch, batch_idx):
+        x, y = batch
+        logits = self(x)
+        loss = F.nll_loss(logits, y)
+        self.log("train_loss", loss)
+        return loss
+    def evaluate(self, batch, stage=None):
+        x, y = batch
+        logits = self(x)
+        loss = F.nll_loss(logits, y)
+        preds = torch.argmax(logits, dim=1)
+        acc = accuracy(preds, y)
+        if stage:
+            self.log(f"{stage}_loss", loss, prog_bar=True)
+            self.log(f"{stage}_acc", acc, prog_bar=True)
+    def validation_step(self, batch, batch_idx):
+        self.evaluate(batch, "val")
+
+    def test_step(self, batch, batch_idx):
+        self.evaluate(batch, "test")
+
+    def configure_optimizers(self):
+        optimizer = torch.optim.Adam(self.parameters(), lr=1e-3)
+        return optimizer
         
 class ViT_Autoencoder(nn.Module):
     def __init__(self, chw=(1, 28, 28), n_patches=7, hidden_dims=128, n_heads=8, n_blocks=4, decoder_hidden_dims=128):
