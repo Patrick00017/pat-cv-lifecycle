@@ -190,13 +190,13 @@ class ViT_Autoencoder(nn.Module):
         return out
 
 
-img_size = (28, 28)
-images = torch.randn((12, 1, 28, 28))
-# model = ViT()
-model = ViT_Autoencoder()
-out = model(images)
-out = unpatchify(out, (28, 28))
-print(out.shape)
+# img_size = (28, 28)
+# images = torch.randn((12, 1, 28, 28))
+# # model = ViT()
+# model = ViT_Autoencoder()
+# out = model(images)
+# out = unpatchify(out, (28, 28))
+# print(out.shape)
 # model = TransformerEncoderBlock(hidden_dims=8, n_heads=2)
 # x = torch.randn(7, 50, 8)  # Dummy sequences
 # print(model(x).shape)      # torch.Size([7, 50, 8])

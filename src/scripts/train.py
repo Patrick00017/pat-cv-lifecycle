@@ -2,37 +2,51 @@ import torch
 from torch import nn
 import torch.nn.functional as F
 import lightning as L
+from pytorch_lightning import LightningModule, Trainer, seed_everything
+from pytorch_lightning.loggers import TensorBoardLogger
+from pytorch_lightning.callbacks import LearningRateMonitor
 from models.simple_autoencoder import SimpleAutoEncoder
-from data.common_datasets import get_mnist_train_loader
+from models.vision_transformer import ViT
+from data.common_datasets import get_mnist_train_loader, get_cifar10_datamodule
 from pprint import pprint
 from tqdm import tqdm
 import yaml
 import os
 
+seed_everything(7)
+
 # read yaml config file
-with open('configs/simple_autoencoder.yaml', 'r') as file:
+with open('configs/vit.yaml', 'r') as file:
     cfg = yaml.safe_load(file)
 
-dataloader = get_mnist_train_loader(cfg["train"]["batch_size"])
+# dataloader = get_mnist_train_loader(cfg["train"]["batch_size"])
+cifar10_dm = get_cifar10_datamodule(cfg["train"]["batch_size"])
 
-model = SimpleAutoEncoder(cfg)
+model = ViT(cfg)
+model.datamodule = cifar10_dm
 
-# train
-# trainer = L.Trainer()
-# trainer.fit(model=autoencoder, train_dataloaders=dataloader)
+trainer = Trainer(
+    max_epochs=cfg["train"]["epoch"],
+    gpus=0,
+    logger=TensorBoardLogger("logs/", name="vit_cifar10"),
+    callbacks=[LearningRateMonitor(logging_interval="step")],
+)
 
-optimizer = model.configure_optimizers()
-for i in tqdm(range(cfg["train"]["epoch"])):
-    total_loss = 0.0
-    num_batch = len(dataloader)
-    for batch_idx, batch in enumerate(dataloader):
-        loss = model.training_step(batch, batch_idx)
-        loss.backward()
-        total_loss += loss.detach().item()
-        optimizer.step()
-        optimizer.zero_grad()
+trainer.fit(model, cifar10_dm)
+trainer.test(model, datamodule=cifar10_dm)
+
+# optimizer = model.configure_optimizers()
+# for i in tqdm(range(cfg["train"]["epoch"])):
+#     total_loss = 0.0
+#     num_batch = len(dataloader)
+#     for batch_idx, batch in enumerate(dataloader):
+#         loss = model.training_step(batch, batch_idx)
+#         loss.backward()
+#         total_loss += loss.detach().item()
+#         optimizer.step()
+#         optimizer.zero_grad()
     
-    pprint(f"epoch: {i}, train_loss: {total_loss / num_batch}")
+#     pprint(f"epoch: {i}, train_loss: {total_loss / num_batch}")
 
 # save last ckpt
 output_dir = cfg["train"]["output_dir"]

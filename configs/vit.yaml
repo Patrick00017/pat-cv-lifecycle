@@ -9,7 +9,7 @@ dataset:
   name: "cifar10"
   num_classes: 10
 train:
-  epoch: 10
+  epoch: 30
   batch_size: 128
   lr: 0.001
   output_dir: /home/patrick/workspace/cv/pat-cv-lifecycle/outputs

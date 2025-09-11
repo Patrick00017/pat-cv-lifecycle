@@ -14,7 +14,7 @@ def get_mnist_train_loader(batch_size: int):
     train_loader = DataLoader(dataset, batch_size=batch_size)
     return train_loader
 
-def get_cifar10_train_loader(batch_size: int):
+def get_cifar10_datamodule(batch_size: int):
     train_transforms = torchvision.transforms.Compose(
         [
             torchvision.transforms.RandomCrop(32, padding=4),
