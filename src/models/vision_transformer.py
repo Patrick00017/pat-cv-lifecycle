@@ -27,7 +27,7 @@ def unpatchify(patches, img_size):
     n, n_patches, chw = patches.shape
     features = rearrange(patches, 'b n v -> b (n v)')
     print(features.shape)
-    features = rearrange(features, 'b (c h w) -> b c h w', h=img_size[0], w=img_size[1])
+    images = rearrange(features, 'b (c h w) -> b c h w', h=img_size[0], w=img_size[1])
     # assert images.shape[1] == 3, "imgs channel should be 3"
     return images
 
