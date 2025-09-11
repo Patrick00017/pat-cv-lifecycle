@@ -5,9 +5,9 @@ model:
   hidden_dims: 256
   n_heads: 8
   n_encoder_blocks: 4
-  out_dims: 10 # depend on the class num in the dataset
 dataset: 
   name: "cifar10"
+  num_classes: 10
 train:
   epoch: 10
   batch_size: 128

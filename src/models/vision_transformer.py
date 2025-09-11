@@ -85,18 +85,19 @@ class TransformerDecoder(nn.Module):
         return x
 
 class ViT(pl.LightningModule):
-    def __init__(self, cfg, chw=(1, 28, 28), n_patches=7, hidden_dims=128, n_heads=8, n_blocks=4, out_dims=2):
+    def __init__(self, cfg):
         super(ViT, self).__init__()
         # cfg is model config settings
-        self.chw = chw
-        self.n_patches = n_patches
-        assert chw[1] % n_patches == 0, "Input shape not entirely divisible by patchsize"
-        assert chw[2] % n_patches == 0, "Input shape not entirely divisible by patchsize"
+        self.cfg = cfg
+        self.chw = cfg["model"]["chw"]
+        self.n_patches = cfg["model"]["num_patches"]
+        assert self.chw[1] % self.n_patches == 0, "Input shape not entirely divisible by patchsize"
+        assert self.chw[2] % self.n_patches == 0, "Input shape not entirely divisible by patchsize"
 
-        self.patch_size = (chw[1] / n_patches, chw[2] / n_patches)
-        self.hidden_dims = hidden_dims
+        self.patch_size = (self.chw[1] / self.n_patches, self.chw[2] / self.n_patches)
+        self.hidden_dims = cfg["model"]["hidden_dims"]
         # 1. linear mapper
-        self.input_dim = int(chw[0] * self.patch_size[0] * self.patch_size[1])
+        self.input_dim = int(self.chw[0] * self.patch_size[0] * self.patch_size[1])
         self.linear_mapper = nn.Linear(self.input_dim, self.hidden_dims)
         # 2. cls token
         self.cls_token = nn.Parameter(torch.rand(1, self.hidden_dims))
@@ -104,12 +105,9 @@ class ViT(pl.LightningModule):
         self.pos_embed = nn.Parameter(torch.tensor(get_positional_embeddings(self.n_patches ** 2 + 1, self.hidden_dims)))
         self.pos_embed.requires_grad = False
         # 4. transformer encoder
-        self.encoder = nn.ModuleList([TransformerBlock(hidden_dims=hidden_dims, n_heads=n_heads) for _ in range(n_blocks)])
+        self.encoder = nn.ModuleList([TransformerBlock(hidden_dims=self.hidden_dims, n_heads=cfg["model"]["n_heads"]) for _ in range(cfg["model"]["n_encoder_blocks"])])
         # 5. classification mlp
-        self.mlp = nn.Sequential(
-            nn.Linear(hidden_dims, out_dims),
-            nn.Softmax(dim=-1)
-        )
+        self.mlp = nn.Linear(self.hidden_dims, cfg["dataset"]["num_classes"])
 
     def forward(self, images):
         batch_size = images.shape[0]
@@ -148,7 +146,7 @@ class ViT(pl.LightningModule):
         self.evaluate(batch, "test")
 
     def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.parameters(), lr=1e-3)
+        optimizer = torch.optim.Adam(self.parameters(), lr=self.cfg["train"]["lr"])
         return optimizer
         
 class ViT_Autoencoder(nn.Module):
