@@ -16,7 +16,7 @@ import os
 seed_everything(7)
 
 # read yaml config file
-with open('configs/vit.yaml', 'r') as file:
+with open("configs/vit.yaml", "r") as file:
     cfg = yaml.safe_load(file)
 
 # dataloader = get_mnist_train_loader(cfg["train"]["batch_size"])
@@ -45,7 +45,7 @@ trainer.test(model, datamodule=cifar10_dm)
 #         total_loss += loss.detach().item()
 #         optimizer.step()
 #         optimizer.zero_grad()
-    
+
 #     pprint(f"epoch: {i}, train_loss: {total_loss / num_batch}")
 
 # save last ckpt
@@ -55,4 +55,6 @@ final_dir_path = f"{output_dir}/{model_name}"
 if not os.path.exists(final_dir_path):
     os.makedirs(final_dir_path)
 torch.save(model.state_dict(), f"{final_dir_path}/last_checkpoint.pth")
-pprint(f"train process complete. save checkpoint at {final_dir_path}/last_checkpoint.pth")
+pprint(
+    f"train process complete. save checkpoint at {final_dir_path}/last_checkpoint.pth"
+)
