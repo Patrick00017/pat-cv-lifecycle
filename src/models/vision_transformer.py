@@ -68,6 +68,19 @@ class PatchEmbedding(nn.Module):
         return self.layers(x)
 
 
+class PositionEmbedding(nn.Module):
+    def __init__(self, embed_dim, max_len=2**12):
+        super().__init__()
+
+        pos = torch.arange(max_len).unsqueeze(1)
+        i = torch.arange(embed_dim // 2).unsqueeze(0)
+        angle = pos / (10_000 ** (2 * i / embed_dim))
+        self.pe_mat = torch.zeros(size=(max_len, embed_dim))
+        self.pe_mat[:, 0::2] = torch.sin(angle)
+        self.pe_mat[:, 1::2] = torch.cos(angle)
+        self.register_buffer("pos_enc_mat", self.pe_mat)
+
+
 class TransformerBlock(nn.Module):
     def __init__(self, hidden_dims, n_heads, mlp_ratio=4):
         super(TransformerBlock, self).__init__()
