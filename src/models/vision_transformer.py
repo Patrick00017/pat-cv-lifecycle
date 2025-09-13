@@ -50,6 +50,24 @@ def get_positional_embeddings(sequence_length, d):
     return result
 
 
+class PatchEmbedding(nn.Module):
+    def __init__(self, patch_size, embed_dim, drop_prob=0.1):
+        super().__init__()
+
+        self.patch_size = patch_size
+        self.in_feats = (patch_size**2) * 3  # 3 is image channel
+        self.layers = nn.Sequential(
+            nn.LayerNorm(self.in_feats),
+            nn.Linear(self.in_feats, embed_dim),
+            nn.Dropout(drop_prob),
+            nn.LayerNorm(embed_dim),
+        )
+
+    def forward(self, x):
+        x = rearrange(x, "b c (h p) (w p) -> b (h w) (c p p)", p=self.patch_size)
+        return self.layers(x)
+
+
 class TransformerBlock(nn.Module):
     def __init__(self, hidden_dims, n_heads, mlp_ratio=4):
         super(TransformerBlock, self).__init__()
