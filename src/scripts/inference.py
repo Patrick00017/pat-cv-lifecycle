@@ -20,7 +20,32 @@ from pytorch_grad_cam import (
     EigenCAM,
     FullGrad,
 )
-from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
+from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget, ClassifierOutputSoftmaxTarget
 from pytorch_grad_cam.utils.image import show_cam_on_image
 import yaml
 import os
+
+seed_everything(7)
+
+# read yaml config file
+with open("configs/vit.yaml", "r") as file:
+    cfg = yaml.safe_load(file)
+
+targets = [ClassifierOutputSoftmaxTarget(281)]
+model = ViT(cfg)
+# if model config contains attention visualze model like grad-cam, so init it
+cam = None
+if cfg["model"]["visualization"]["enable"]:
+    cam = GradCAM(model=model, target_layers=model.get_feature_heatmap_target_layer(), reshape_transform=vit_grad_cam_reshape_transform)
+
+# todo: read image
+input_tensor = None
+rgb_img = None
+
+# You can also pass aug_smooth=True and eigen_smooth=True, to apply smoothing.
+grayscale_cam = cam(input_tensor=input_tensor, targets=targets)
+# In this example grayscale_cam has only one image in the batch:
+grayscale_cam = grayscale_cam[0, :]
+visualization = show_cam_on_image(rgb_img, grayscale_cam, use_rgb=True)
+# You can also get the model outputs without having to redo inference
+model_outputs = cam.outputs

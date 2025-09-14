@@ -5,9 +5,11 @@ import lightning as L
 from pytorch_lightning import LightningModule, Trainer, seed_everything
 from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning.callbacks import LearningRateMonitor
+from pytorch_grad_cam import GradCAM
 from models.simple_autoencoder import SimpleAutoEncoder
 from models.vision_transformer import ViT
 from data.common_datasets import get_mnist_train_loader, get_cifar10_datamodule
+from utils.misc import vit_grad_cam_reshape_transform
 from pprint import pprint
 from tqdm import tqdm
 import yaml
@@ -34,19 +36,6 @@ trainer = Trainer(
 
 trainer.fit(model, cifar10_dm)
 trainer.test(model, datamodule=cifar10_dm)
-
-# optimizer = model.configure_optimizers()
-# for i in tqdm(range(cfg["train"]["epoch"])):
-#     total_loss = 0.0
-#     num_batch = len(dataloader)
-#     for batch_idx, batch in enumerate(dataloader):
-#         loss = model.training_step(batch, batch_idx)
-#         loss.backward()
-#         total_loss += loss.detach().item()
-#         optimizer.step()
-#         optimizer.zero_grad()
-
-#     pprint(f"epoch: {i}, train_loss: {total_loss / num_batch}")
 
 # save last ckpt
 output_dir = cfg["train"]["output_dir"]

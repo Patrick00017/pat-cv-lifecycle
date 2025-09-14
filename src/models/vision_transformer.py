@@ -231,7 +231,7 @@ class ViT(pl.LightningModule):
         optimizer = torch.optim.Adam(self.parameters(), lr=self.cfg["train"]["lr"])
         return optimizer
 
-    def feature_heatmap_target_layer(self):
+    def get_feature_heatmap_target_layer(self):
         if self.cfg["model"]["visualization"]["enable"]:
             return self.encoder[-1].norm1
         return None
