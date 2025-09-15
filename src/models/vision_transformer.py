@@ -5,7 +5,14 @@ import numpy as np
 from einops import rearrange, repeat
 import pytorch_lightning as pl
 from torchmetrics.functional import accuracy
+from data.common_datasets import get_mnist_train_loader, get_cifar10_datamodule
 from torch.optim.lr_scheduler import OneCycleLR
+from pytorch_lightning.loggers import TensorBoardLogger
+from pytorch_lightning.callbacks import LearningRateMonitor
+from pprint import pprint
+from tqdm import tqdm
+import yaml
+import os
 
 
 def patchify(images, n_patches):
@@ -316,3 +323,37 @@ class ViT_Autoencoder(nn.Module):
 # model = TransformerEncoderBlock(hidden_dims=8, n_heads=2)
 # x = torch.randn(7, 50, 8)  # Dummy sequences
 # print(model(x).shape)      # torch.Size([7, 50, 8])
+
+if __name__ == "__main__":
+    pl.seed_everything(7)
+
+    # read yaml config file
+    with open("configs/vit.yaml", "r") as file:
+        cfg = yaml.safe_load(file)
+
+    # dataloader = get_mnist_train_loader(cfg["train"]["batch_size"])
+    cifar10_dm = get_cifar10_datamodule(cfg["train"]["batch_size"])
+
+    model = ViT(cfg)
+    model.datamodule = cifar10_dm
+
+    trainer = pl.Trainer(
+        max_epochs=cfg["train"]["epoch"],
+        gpus=0,
+        logger=TensorBoardLogger("logs/", name="vit_cifar10"),
+        callbacks=[LearningRateMonitor(logging_interval="step")],
+    )
+
+    trainer.fit(model, cifar10_dm)
+    trainer.test(model, datamodule=cifar10_dm)
+
+    # save last ckpt
+    output_dir = cfg["train"]["output_dir"]
+    model_name = cfg["model"]["name"]
+    final_dir_path = f"{output_dir}/{model_name}"
+    if not os.path.exists(final_dir_path):
+        os.makedirs(final_dir_path)
+    torch.save(model.state_dict(), f"{final_dir_path}/last_checkpoint.pth")
+    pprint(
+        f"train process complete. save checkpoint at {final_dir_path}/last_checkpoint.pth"
+    )

@@ -1,7 +1,6 @@
 import torch
 from torch import nn
 import torch.nn.functional as F
-import lightning as L
 from pytorch_lightning import LightningModule, Trainer, seed_everything
 from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning.callbacks import LearningRateMonitor
