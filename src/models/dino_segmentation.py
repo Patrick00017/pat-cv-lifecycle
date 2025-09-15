@@ -2,8 +2,8 @@ import pytorch_lightning as pl
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from dinov2.models.vision_transformer import vit_small
-from dinov2.data.transforms import make_classification_eval_transform
+# from dinov2.models.vision_transformer import vit_small
+# from dinov2.data.transforms import make_classification_eval_transform
 from pytorch_lightning.callbacks.model_checkpoint import ModelCheckpoint
 from pytorch_lightning.loggers import CSVLogger
 from einops import rearrange
