@@ -5,7 +5,7 @@ import numpy as np
 from einops import rearrange, repeat
 import pytorch_lightning as pl
 from torchmetrics.functional import accuracy
-from data.common_datasets import get_mnist_train_loader, get_cifar10_datamodule
+from data.common_datasets import MNISTDataModule, get_cifar10_datamodule
 from torch.optim.lr_scheduler import OneCycleLR
 from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning.callbacks import LearningRateMonitor
