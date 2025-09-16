@@ -14,7 +14,7 @@ data_root_path = "datasets/"
 #     return train_loader
 
 class MNISTDataModule(pl.LightningModule):
-    def __init__(self, dataset_dir, batch_size):
+    def __init__(self, batch_size, dataset_dir=data_root_path):
         super().__init__()
         self.dataset_dir = dataset_dir
         self.batch_size = batch_size
@@ -38,7 +38,7 @@ class MNISTDataModule(pl.LightningModule):
         return DataLoader(self.test_dataset, batch_size=self.batch_size, shuffle=False)
     
 class Cifar10DataModule(pl.LightningModule):
-    def __init__(self, dataset_dir, batch_size):
+    def __init__(self, batch_size, dataset_dir=data_root_path):
         super().__init__()
         self.dataset_dir = dataset_dir
         self.batch_size = batch_size

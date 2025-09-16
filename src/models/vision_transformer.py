@@ -5,7 +5,7 @@ import numpy as np
 from einops import rearrange, repeat
 import pytorch_lightning as pl
 from torchmetrics.functional import accuracy
-from data.common_datasets import MNISTDataModule, get_cifar10_datamodule
+from data.common_datasets import MNISTDataModule, Cifar10DataModule
 from torch.optim.lr_scheduler import OneCycleLR
 from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning.callbacks import LearningRateMonitor
@@ -198,9 +198,11 @@ class ViT(pl.LightningModule):
     def forward(self, images):
         batch_size = images.shape[0]
         patches = patchify(images, self.n_patches)
+        # hardcode right now
+        patches = patches.to("cuda")
         tokens = self.linear_mapper(patches)
         # merge cls token
-        print(self.cls_token.shape)
+        # print(self.cls_token.shape)
         refined_cls_token = repeat(self.cls_token, "n d -> b n d", b=batch_size)
         tokens = torch.cat([refined_cls_token, tokens], dim=1)
         refined_pos_embed = rearrange(self.pos_embed, "n d -> 1 n d")
@@ -213,6 +215,7 @@ class ViT(pl.LightningModule):
 
     def training_step(self, batch, batch_idx):
         x, y = batch
+        print(x.device)
         logits = self(x)
         loss = F.nll_loss(logits, y)
         self.log("train_loss", loss)
@@ -320,19 +323,19 @@ if __name__ == "__main__":
         cfg = yaml.safe_load(file)
 
     # dataloader = get_mnist_train_loader(cfg["train"]["batch_size"])
-    cifar10_dm = get_cifar10_datamodule(cfg["train"]["batch_size"])
+    cifar10_dm = Cifar10DataModule(batch_size=cfg["train"]["batch_size"])
 
     model = ViT(cfg)
-    model.datamodule = cifar10_dm
+    # model = model.to("cuda")
 
     trainer = pl.Trainer(
         max_epochs=cfg["train"]["epoch"],
-        gpus=0,
+        accelerator='gpu',
+        devices=[0],
         logger=TensorBoardLogger("logs/", name="vit_cifar10"),
         callbacks=[LearningRateMonitor(logging_interval="step")],
     )
-
-    trainer.fit(model, cifar10_dm)
+    trainer.fit(model, datamodule=cifar10_dm)
     trainer.test(model, datamodule=cifar10_dm)
 
     # save last ckpt
