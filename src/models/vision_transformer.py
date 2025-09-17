@@ -21,7 +21,7 @@ def patchify(images, n_patches):
     assert h == w, "patchify method is implemented for square images only"
 
     # patch and patch values
-    patches = torch.zeros(n, n_patches**2, h * w * c // n_patches**2)
+    patches = torch.zeros(n, n_patches**2, h * w * c // n_patches**2).to(images.device)
     patch_size = h // n_patches
 
     for idx, image in enumerate(images):
@@ -198,8 +198,6 @@ class ViT(pl.LightningModule):
     def forward(self, images):
         batch_size = images.shape[0]
         patches = patchify(images, self.n_patches)
-        # hardcode right now
-        patches = patches.to("cuda")
         tokens = self.linear_mapper(patches)
         # merge cls token
         # print(self.cls_token.shape)
