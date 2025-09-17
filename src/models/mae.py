@@ -104,3 +104,68 @@ class Encoder(nn.Module):
         ).clone()
         new_token[:, ~mask, :] = x
         return new_token, mask
+
+class Decoder(nn.Module):
+    def __init__(self, chw, patch_size, depth, embed_dim, n_heads, n_pixel_values=256):
+        super().__init__()
+        self.chw = chw
+        self.patch_size = patch_size
+        self.cell_size = chw[1:] // patch_size
+
+        self.pos_embed = PositionEmbedding(embed_dim)
+        self.blocks = nn.ModuleList(
+            TransformerBlock(embed_dim, n_heads) for _ in range(depth)
+        )
+        self.proj = nn.Linear(embed_dim, (patch_size ** 2) * 3)
+
+    def forward(self, x):
+        # x shape is [b, cells, embed_dim]
+        x += repeat(self.pos_embed.pe_mat.to(x.device), "l d -> b l d", b=x.size(0))[:, :x.size(1), :]
+        x = self.blocks(x)
+        x = self.proj(x)
+        x = rearrange(x, "b (h w) (p p 3) -> b 3 (h p) (w p)", h=self.chw[1], w=self.chw[2], p=self.patch_size)
+        return x
+    
+class MAE(pl.LightningModule):
+    def __init__(self, chw, patch_size, n_heads, encoder_depth, decoder_depth, encoder_embed_dim, decoder_embed_dim):
+        super().__init__()
+        self.chw = chw
+        self.patch_size = patch_size
+        assert chw[1] % patch_size == 0 and chw[2] % patch_size == 0, "img size must be divided by patch size"
+        self.n_cells = chw[1] // patch_size
+        self.encoder = Encoder(chw, patch_size, encoder_depth, encoder_embed_dim, n_heads)
+        self.proj = nn.Linear(encoder_embed_dim, decoder_embed_dim)
+        self.decoder = Decoder(chw, patch_size, decoder_depth, decoder_embed_dim, n_heads)
+
+    def forward(self, x, mask_ratio=0.75):
+        x, mask = self.encoder(x, mask_ratio)
+        x = self.proj(x)
+        x = self.decoder(x)
+        return x, mask
+
+    def upsample_mask(self, mask, batch_size, device):
+        up_mask = torch.repeat_interleave(
+            torch.repeat_interleave(
+                rearrange(mask, '(c c) -> c c'),
+                repeats=self.patch_size,
+                dim=0
+            ),
+            repeats=self.patch_size,
+            dim=1
+        ).to(device) # (p p c c)
+        up_mask = repeat(up_mask, 'h w -> b c h w', b=batch_size, c=3)
+        return up_mask
+
+    def get_loss(self, image, mask_ratio=0.75):
+        out, mask = self.forward(image, mask_ratio)
+        up_mask = self.upsample_mask(mask, image.size(0), image.device)
+        loss = up_mask * F.mse_loss(out, image, reduction='none')
+        return torch.mean(loss)
+
+    def reconstruct(self, image, mask_ratio=0.75):
+        out, mask = self.forward(image, mask_ratio)
+        up_mask = self.upsample_mask(mask, image.size(0), image.device)
+        masked_image = torch.where(up_mask, torch.full_like(image, fill_value=0), image)
+        recon_image = torch.where(up_mask, out, image)
+        return masked_image, recon_image
+        
