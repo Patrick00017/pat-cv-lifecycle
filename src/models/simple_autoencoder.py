@@ -2,8 +2,8 @@ import os
 import torch
 from torch import nn
 import torch.nn.functional as F
-import lightning as L
 import einops
+import pytorch_lightning as pl
 
 class Encoder(nn.Module):
     def __init__(self, cfg):
@@ -27,7 +27,7 @@ class Decoder(nn.Module):
     def forward(self, x):
         return self.l1(x)
     
-class SimpleAutoEncoder(L.LightningModule):
+class SimpleAutoEncoder(pl.LightningModule):
     def __init__(self, cfg):
         super().__init__()
         self.cfg = cfg

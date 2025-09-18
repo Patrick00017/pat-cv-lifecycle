@@ -182,10 +182,12 @@ class MAE(pl.LightningModule):
     def training_step(self, batch, batch_idx):
         x, y = batch
         loss = self.get_loss(x, mask_ratio=0.75)
+        self.log("trainLoss", loss, sync_dist=True, batch_size=x.size(0))
         return loss
     def validation_step(self, batch, batch_idx):
         x, y = batch
         loss = self.get_loss(x, mask_ratio=0.75)
+        self.log("valLoss", loss, sync_dist=True, batch_size=x.size(0), on_epoch=True, logger=True, prog_bar=True)
         return loss
     def configure_optimizers(self):
         optimizer = torch.optim.SGD([p for p in self.parameters() if p.requires_grad], lr=0.01, momentum=0.9, weight_decay=0.0005)
