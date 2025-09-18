@@ -5,7 +5,10 @@ import numpy as np
 from einops import rearrange, repeat
 import pytorch_lightning as pl
 from torchmetrics.functional import accuracy
-
+from pytorch_lightning.callbacks.model_checkpoint import ModelCheckpoint
+from pytorch_lightning.loggers import CSVLogger
+from data.common_datasets import Cifar10DataModule
+from pytorch_lightning import Trainer
 
 class PatchEmbedding(nn.Module):
     def __init__(self, patch_size, embed_dim, drop_prob=0.1):
@@ -21,7 +24,7 @@ class PatchEmbedding(nn.Module):
         )
 
     def forward(self, x):
-        x = rearrange(x, "b c (h p) (w p) -> b (h w) (c p p)", p=self.patch_size)
+        x = rearrange(x, "b c (h p1) (w p2) -> b (h w) (c p1 p2)", p1=self.patch_size, p2=self.patch_size)
         return self.layers(x)
 
 
@@ -80,12 +83,12 @@ class Encoder(nn.Module):
         super().__init__()
 
         self.embed_dim = embed_dim
-        self.cell_size = chw[1:] // patch_size  # (num_patch ** 2)
+        self.cell_size = chw[1] // patch_size  # (num_patch ** 2)
         self.patch_embed = PatchEmbedding(patch_size, embed_dim)
         self.pos_embed = PositionEmbedding(embed_dim)
         self.patch_shuffle = PatchShuffle()
         self.blocks = nn.ModuleList(
-            TransformerBlock(embed_dim, n_heads) for _ in range(depth)
+            [TransformerBlock(embed_dim, n_heads) for _ in range(depth)]
         )
         self.norm = nn.LayerNorm(embed_dim)
         self.mask_token = nn.Parameter(torch.randn((embed_dim,)))
@@ -96,7 +99,9 @@ class Encoder(nn.Module):
             :, : x.size(1), :
         ]
         unmasked_token, mask = self.patch_shuffle(x, mask_ratio=mask_ratio)
-        x = self.blocks(unmasked_token)
+        x = unmasked_token
+        for block in self.blocks:
+            x = block(x)
         x = self.norm(x)
 
         new_token = repeat(
@@ -110,20 +115,22 @@ class Decoder(nn.Module):
         super().__init__()
         self.chw = chw
         self.patch_size = patch_size
-        self.cell_size = chw[1:] // patch_size
+        self.cell_size = chw[1] // patch_size
 
         self.pos_embed = PositionEmbedding(embed_dim)
         self.blocks = nn.ModuleList(
-            TransformerBlock(embed_dim, n_heads) for _ in range(depth)
+            [TransformerBlock(embed_dim, n_heads) for _ in range(depth)]
         )
-        self.proj = nn.Linear(embed_dim, (patch_size ** 2) * 3)
+        self.proj = nn.Linear(embed_dim, (self.patch_size ** 2) * 3)
 
     def forward(self, x):
         # x shape is [b, cells, embed_dim]
         x += repeat(self.pos_embed.pe_mat.to(x.device), "l d -> b l d", b=x.size(0))[:, :x.size(1), :]
-        x = self.blocks(x)
+        for block in self.blocks:
+            x = block(x)
         x = self.proj(x)
-        x = rearrange(x, "b (h w) (p p 3) -> b 3 (h p) (w p)", h=self.chw[1], w=self.chw[2], p=self.patch_size)
+        x = rearrange(x, "b (c1 c2) (h w c) -> b c (h c1) (w c2)", c1=self.cell_size, c2=self.cell_size, h=self.patch_size, w=self.patch_size, c=3)
+        print(x.shape)
         return x
     
 class MAE(pl.LightningModule):
@@ -132,7 +139,7 @@ class MAE(pl.LightningModule):
         self.chw = chw
         self.patch_size = patch_size
         assert chw[1] % patch_size == 0 and chw[2] % patch_size == 0, "img size must be divided by patch size"
-        self.n_cells = chw[1] // patch_size
+        self.cell_size = chw[1] // patch_size
         self.encoder = Encoder(chw, patch_size, encoder_depth, encoder_embed_dim, n_heads)
         self.proj = nn.Linear(encoder_embed_dim, decoder_embed_dim)
         self.decoder = Decoder(chw, patch_size, decoder_depth, decoder_embed_dim, n_heads)
@@ -146,7 +153,7 @@ class MAE(pl.LightningModule):
     def upsample_mask(self, mask, batch_size, device):
         up_mask = torch.repeat_interleave(
             torch.repeat_interleave(
-                rearrange(mask, '(c c) -> c c'),
+                rearrange(mask, '(c1 c2) -> c1 c2', c1=self.cell_size),
                 repeats=self.patch_size,
                 dim=0
             ),
@@ -159,6 +166,9 @@ class MAE(pl.LightningModule):
     def get_loss(self, image, mask_ratio=0.75):
         out, mask = self.forward(image, mask_ratio)
         up_mask = self.upsample_mask(mask, image.size(0), image.device)
+        print(up_mask.shape)
+        # print(F.mse_loss(out, image, reduction='none').shape)
+        print(out.shape, image.shape)
         loss = up_mask * F.mse_loss(out, image, reduction='none')
         return torch.mean(loss)
 
@@ -168,4 +178,52 @@ class MAE(pl.LightningModule):
         masked_image = torch.where(up_mask, torch.full_like(image, fill_value=0), image)
         recon_image = torch.where(up_mask, out, image)
         return masked_image, recon_image
+    
+    def training_step(self, batch, batch_idx):
+        x, y = batch
+        loss = self.get_loss(x, mask_ratio=0.75)
+        return loss
+    def validation_step(self, batch, batch_idx):
+        x, y = batch
+        loss = self.get_loss(x, mask_ratio=0.75)
+        return loss
+    def configure_optimizers(self):
+        optimizer = torch.optim.SGD([p for p in self.parameters() if p.requires_grad], lr=0.01, momentum=0.9, weight_decay=0.0005)
+        return {'optimizer': optimizer}
+    
+if __name__ == "__main__":
+    device = "cuda"
+    CHECKPOINT_CALLBACK = ModelCheckpoint(
+        save_top_k=3, 
+        monitor="valLoss", 
+        every_n_epochs=1,  # Save the model at every epoch 
+        save_on_train_epoch_end=True  # Ensure saving happens at the end of a training epoch
+    )
+    LOGGER = CSVLogger("outputs", name="mae-logs")
+    dm = Cifar10DataModule(batch_size=64)
+    # x = torch.randn((2, 3, 224, 224)).to(device)
+    model = MAE(
+        chw=[3, 32, 32],
+        patch_size=4,
+        n_heads=4,
+        encoder_depth=4,
+        decoder_depth=2,
+        encoder_embed_dim=384,
+        decoder_embed_dim=256
+    ).to(device)
+
+    trainer = Trainer(
+        logger=LOGGER,
+        accelerator='cuda',
+        devices=[0],
+        strategy="auto",
+        callbacks=[CHECKPOINT_CALLBACK],
+        max_epochs=100
+    )
+    trainer.fit(model, datamodule=dm)
+    # trainer.validate(model, datamodule=dm)
+    # pred = model(
+    # print(pred.shape)
+    print("saving model!")
+    trainer.save_checkpoint("/home/patrick/workspace/cv/pat-cv-lifecycle/checkpoints/mae_cifar10.ckpt")
         
