@@ -1,18 +1,21 @@
 model:
   name: "vit"
-  chw: [3, 32, 32]
-  num_patches: 8 # so patch_size is 224 / 16 = 14
+  chw: [1, 28, 28]
+  num_patches: 7 # so patch_size is 224 / 16 = 14
   hidden_dims: 256
-  n_heads: 8
-  n_encoder_blocks: 4
+  n_heads: 4
+  n_encoder_blocks: 2
+  dropout: 0.2
+  pool: "none"
   visualization: 
     enable: True
     type: GradCAM
 dataset: 
-  name: "cifar10"
+  name: "mnist"
   num_classes: 10
 train:
-  epoch: 30
-  batch_size: 128
-  lr: 0.001
+  epoch: 20
+  batch_size: 512
+  lr: 0.1
+  weight_decay: 0.005
   output_dir: /home/patrick/workspace/cv/pat-cv-lifecycle/outputs

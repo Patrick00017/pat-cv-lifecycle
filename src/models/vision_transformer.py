@@ -3,8 +3,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 from einops import rearrange, repeat
+from einops.layers.torch import Rearrange
 import pytorch_lightning as pl
-from torchmetrics.functional import accuracy
+from torchmetrics.classification.accuracy import MulticlassAccuracy
 from data.common_datasets import MNISTDataModule, Cifar10DataModule
 from torch.optim.lr_scheduler import OneCycleLR
 from pytorch_lightning.loggers import TensorBoardLogger
@@ -89,18 +90,20 @@ class PositionEmbedding(nn.Module):
 
 
 class TransformerBlock(nn.Module):
-    def __init__(self, hidden_dims, n_heads, mlp_ratio=4):
+    def __init__(self, hidden_dims, n_heads, mlp_ratio=4, dropout=0.2):
         super(TransformerBlock, self).__init__()
         self.hidden_dims = hidden_dims
         self.n_heads = n_heads
 
         self.norm1 = nn.LayerNorm(hidden_dims)
-        self.mhsa = nn.MultiheadAttention(hidden_dims, n_heads)
+        self.mhsa = nn.MultiheadAttention(hidden_dims, n_heads, dropout=0.2)
         self.norm2 = nn.LayerNorm(hidden_dims)
         self.mlp = nn.Sequential(
             nn.Linear(hidden_dims, mlp_ratio * hidden_dims),
             nn.GELU(),
+            nn.Dropout(dropout),
             nn.Linear(mlp_ratio * hidden_dims, hidden_dims),
+            nn.Dropout(dropout)
         )
 
     def forward(self, x):
@@ -120,6 +123,7 @@ class TransformerDecoder(nn.Module):
         decoder_embed_dims,
         n_heads,
         chw,
+        dropout=0.2,
         mlp_ratio=4,
         depth=4,
     ):
@@ -142,7 +146,9 @@ class TransformerDecoder(nn.Module):
         self.mlp = nn.Sequential(
             nn.Linear(decoder_embed_dims, decoder_embed_dims * mlp_ratio),
             nn.GELU(),
+            nn.Dropout(dropout),
             nn.Linear(decoder_embed_dims * mlp_ratio, int(patch_size[0]) ** 2 * c),
+            nn.Dropout(dropout)
         )
 
     def forward(self, x):
@@ -169,11 +175,18 @@ class ViT(pl.LightningModule):
             self.chw[2] % self.n_patches == 0
         ), "Input shape not entirely divisible by patchsize"
 
-        self.patch_size = (self.chw[1] / self.n_patches, self.chw[2] / self.n_patches)
+        self.patch_size = (self.chw[1] // self.n_patches, self.chw[2] // self.n_patches)
         self.hidden_dims = cfg["model"]["hidden_dims"]
+        self.dropout = cfg["model"]["dropout"]
         # 1. linear mapper
         self.input_dim = int(self.chw[0] * self.patch_size[0] * self.patch_size[1])
-        self.linear_mapper = nn.Linear(self.input_dim, self.hidden_dims)
+        # self.linear_mapper = nn.Linear(self.input_dim, self.hidden_dims)
+        self.linear_mapper = nn.Sequential(
+            Rearrange('b c (h p1) (w p2) -> b (h w) (p1 p2 c)', p1=self.patch_size[0], p2=self.patch_size[1]),
+            nn.LayerNorm(self.input_dim),
+            nn.Linear(self.input_dim, self.hidden_dims),
+            nn.LayerNorm(self.hidden_dims),
+        )
         # 2. cls token
         self.cls_token = nn.Parameter(torch.rand(1, self.hidden_dims))
         # 3. pos embed
@@ -187,47 +200,53 @@ class ViT(pl.LightningModule):
         self.encoder = nn.ModuleList(
             [
                 TransformerBlock(
-                    hidden_dims=self.hidden_dims, n_heads=cfg["model"]["n_heads"]
+                    hidden_dims=self.hidden_dims, n_heads=cfg["model"]["n_heads"], dropout=self.dropout
                 )
                 for _ in range(cfg["model"]["n_encoder_blocks"])
             ]
         )
+        self.norm = nn.LayerNorm(self.hidden_dims)
+        self.pool = cfg["model"]["pool"]
         # 5. classification mlp
         self.mlp = nn.Linear(self.hidden_dims, cfg["dataset"]["num_classes"])
 
     def forward(self, images):
         batch_size = images.shape[0]
-        patches = patchify(images, self.n_patches)
-        tokens = self.linear_mapper(patches)
-        # merge cls token
-        # print(self.cls_token.shape)
+        print(images.shape)
+        # patches = patchify(images, self.n_patches)
+        tokens = self.linear_mapper(images)
         refined_cls_token = repeat(self.cls_token, "n d -> b n d", b=batch_size)
         tokens = torch.cat([refined_cls_token, tokens], dim=1)
         refined_pos_embed = rearrange(self.pos_embed, "n d -> 1 n d")
         out = tokens + refined_pos_embed
         for block in self.encoder:
             out = block(out)
+        out = self.norm(out)
         # use cls token only
-        out = self.mlp(out[:, 0])
-        return F.log_softmax(out, dim=1)
+        out = out.mean(dim=1) if self.pool == "mean" else out[:, 0]
+        out = self.mlp(out)
+        return out
 
     def training_step(self, batch, batch_idx):
         x, y = batch
-        print(x.device)
         logits = self(x)
-        loss = F.nll_loss(logits, y)
+        loss = F.cross_entropy(logits, y)
         self.log("train_loss", loss)
         return loss
 
     def evaluate(self, batch, stage=None):
         x, y = batch
         logits = self(x)
-        loss = F.nll_loss(logits, y)
-        preds = torch.argmax(logits, dim=1)
-        acc = accuracy(preds, y)
+        loss = F.cross_entropy(logits, y)
+        # use softmax and calculate top-1 and top-5 accuracy
+        preds = torch.softmax(logits, dim=1)
+        preds = torch.argmax(preds, dim=1)
+        # init accuracy component
+        metrics = MulticlassAccuracy(num_classes=self.cfg["dataset"]["num_classes"]).to(x.device)
+        acc = metrics(preds, y)
         if stage:
             self.log(f"{stage}_loss", loss, prog_bar=True)
-            self.log(f"{stage}_acc", acc, prog_bar=True)
+            self.log(f"{stage}_acc", acc, prog_bar=False)
 
     def validation_step(self, batch, batch_idx):
         self.evaluate(batch, "val")
@@ -236,7 +255,7 @@ class ViT(pl.LightningModule):
         self.evaluate(batch, "test")
 
     def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.parameters(), lr=self.cfg["train"]["lr"])
+        optimizer = torch.optim.Adam(self.parameters(), lr=self.cfg["train"]["lr"], weight_decay=self.cfg["train"]["weight_decay"])
         return optimizer
 
     def get_feature_heatmap_target_layer(self):
@@ -244,74 +263,6 @@ class ViT(pl.LightningModule):
             return self.encoder[-1].norm1
         return None
 
-
-class ViT_Autoencoder(nn.Module):
-    def __init__(
-        self,
-        chw=(1, 28, 28),
-        n_patches=7,
-        hidden_dims=128,
-        n_heads=8,
-        n_blocks=4,
-        decoder_hidden_dims=128,
-    ):
-        super(ViT_Autoencoder, self).__init__()
-
-        self.chw = chw
-        self.n_patches = n_patches
-        assert (
-            chw[1] % n_patches == 0
-        ), "Input shape not entirely divisible by patchsize"
-        assert (
-            chw[2] % n_patches == 0
-        ), "Input shape not entirely divisible by patchsize"
-
-        self.patch_size = (chw[1] / n_patches, chw[2] / n_patches)
-        self.hidden_dims = hidden_dims
-        # 1. linear mapper
-        self.input_dim = int(chw[0] * self.patch_size[0] * self.patch_size[1])
-        self.linear_mapper = nn.Linear(self.input_dim, self.hidden_dims)
-        # 2. cls token
-        self.cls_token = nn.Parameter(torch.rand(1, self.hidden_dims))
-        # 3. pos embed
-        self.pos_embed = nn.Parameter(
-            torch.tensor(
-                get_positional_embeddings(self.n_patches**2 + 1, self.hidden_dims)
-            )
-        )
-        self.pos_embed.requires_grad = False
-        # 4. transformer encoder
-        self.encoder = nn.ModuleList(
-            [
-                TransformerBlock(hidden_dims=hidden_dims, n_heads=n_heads)
-                for _ in range(n_blocks)
-            ]
-        )
-
-        self.decoder = TransformerDecoder(
-            n_patches=n_patches,
-            patch_size=self.patch_size,
-            embed_dims=hidden_dims,
-            decoder_embed_dims=decoder_hidden_dims,
-            n_heads=n_heads,
-            chw=chw,
-        )
-
-    def forward(self, images):
-        batch_size = images.shape[0]
-        patches = patchify(images, self.n_patches)
-        tokens = self.linear_mapper(patches)
-        # merge cls token
-        # print(self.cls_token.shape)
-        refined_cls_token = repeat(self.cls_token, "n d -> b n d", b=batch_size)
-        tokens = torch.cat([refined_cls_token, tokens], dim=1)
-        refined_pos_embed = rearrange(self.pos_embed, "n d -> 1 n d")
-        out = tokens + refined_pos_embed
-        for block in self.encoder:
-            out = block(out)
-        # use cls token only
-        out = self.decoder(out[:, 1:])
-        return out
 
 if __name__ == "__main__":
     pl.seed_everything(7)
@@ -321,7 +272,8 @@ if __name__ == "__main__":
         cfg = yaml.safe_load(file)
 
     # dataloader = get_mnist_train_loader(cfg["train"]["batch_size"])
-    cifar10_dm = Cifar10DataModule(batch_size=cfg["train"]["batch_size"])
+    # dm = Cifar10DataModule(batch_size=cfg["train"]["batch_size"])
+    dm = MNISTDataModule(batch_size=cfg["train"]["batch_size"])
 
     model = ViT(cfg)
     # model = model.to("cuda")
@@ -330,11 +282,11 @@ if __name__ == "__main__":
         max_epochs=cfg["train"]["epoch"],
         accelerator='gpu',
         devices=[0],
-        logger=TensorBoardLogger("logs/", name="vit_cifar10"),
+        logger=TensorBoardLogger("logs/", name="vit_mnist"),
         callbacks=[LearningRateMonitor(logging_interval="step")],
     )
-    trainer.fit(model, datamodule=cifar10_dm)
-    trainer.test(model, datamodule=cifar10_dm)
+    trainer.fit(model, datamodule=dm)
+    trainer.test(model, datamodule=dm)
 
     # save last ckpt
     output_dir = cfg["train"]["output_dir"]
