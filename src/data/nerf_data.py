@@ -1,22 +1,21 @@
 from torchvision import transforms
 from torch.utils.data import DataLoader
 import pytorch_lightning as pl
+from torch.utils.data import Dataset
 import torchvision
 import os
 import numpy as np
 import torch
 from typing import Optional, Tuple, List, Union, Callable
+from einops import rearrange, repeat
 
 data_root_path = "datasets/"
 
-class NeRFModule(pl.LightningModule):
-    def __init__(self, batch_size, n_training=100, testimg_idx=101, dataset_dir=data_root_path):
-        super().__init__()
+class NeRFDataset(Dataset):
+    def __init__(self, dataset_dir, n_training=100, testimg_idx=101):
         self.dataset_dir = dataset_dir
-        self.batch_size = batch_size
         self.n_training = n_training
 
-        # load nerf data
         data = np.load(f"{self.dataset_dir}/tiny_nerf_data.npz")
         self.images = torch.from_numpy(data['images'])
         self.poses = torch.from_numpy(data['poses'])
@@ -26,58 +25,58 @@ class NeRFModule(pl.LightningModule):
         # image info
         self.height, self.width = self.images.shape[1:3]
         self.near, self.far = 2., 6.
-    
-    def get_chunks(
-        self,
-        inputs: torch.Tensor,
-        chunksize: int = 2**15
-    ) -> List[torch.Tensor]:
-        r"""
-        Divide an input into chunks.
-        """
-        return [inputs[i:i + chunksize] for i in range(0, inputs.shape[0], chunksize)]
 
-    def prepare_chunks(
-        self,
-        points: torch.Tensor,
-        encoding_function: Callable[[torch.Tensor], torch.Tensor],
-        chunksize: int = 2**15
-    ) -> List[torch.Tensor]:
+    def get_rays(self, height, width, focal_length, c2w):
         r"""
-        Encode and chunkify points to prepare for NeRF model.
+        get rays original and viewdirs
+        output shape: rays_o (100, 100, 3) rays_d (100, 100, 3)
         """
-        points = points.reshape((-1, 3))
-        points = encoding_function(points)
-        points = self.get_chunks(points, chunksize=chunksize)
-        return points
+        i, j = torch.meshgrid(
+            torch.arange(100, dtype=torch.float32),
+            torch.arange(100, dtype=torch.float32),
+            indexing='ij'
+        )
+        i, j = i.transpose(-1, -2), j.transpose(-1, -2)
+        focal_length = 10
+        # trick: create pinhole 
+        directions = torch.stack([(i - width * 0.5) / focal_length, -(j - height * 0.5) / focal_length, -torch.ones_like(i)], dim=-1)
+        print(directions.shape)
+        # convert local direction to global direction
+        rays_d = torch.sum(directions[..., None, :] * c2w[:3, :3], dim=-1)
+        rays_o = c2w[:3, -1].expand(rays_d.shape)
+        return rays_o, rays_d
 
-    def prepare_viewdirs_chunks(
-        self,
-        points: torch.Tensor,
-        rays_d: torch.Tensor,
-        encoding_function: Callable[[torch.Tensor], torch.Tensor],
-        chunksize: int = 2**15
-    ) -> List[torch.Tensor]:
-        r"""
-        Encode and chunkify viewdirs to prepare for NeRF model.
-        """
-        # Prepare the viewdirs
-        viewdirs = rays_d / torch.norm(rays_d, dim=-1, keepdim=True)
-        viewdirs = viewdirs[:, None, ...].expand(points.shape).reshape((-1, 3))
-        viewdirs = encoding_function(viewdirs)
-        viewdirs = self.get_chunks(viewdirs, chunksize=chunksize)
-        return viewdirs
-    
+    def __len__(self):
+        return self.n_training
+
+    def __getitem__(self, idx):
+        target_img_idx = np.random.randint(self.images.shape[0])
+        target_img = self.images[target_img_idx]
+        height, width = target_img.shape[:2]
+        target_pose = self.poses[target_img_idx]
+        rays_o, rays_d = self.get_rays(height, width, self.focal, target_pose)
+        rays_o = rearrange(rays_o, "h w 3 -> (h w) 3")
+        rays_d = rearrange(rays_d, "h w 3 -> (h w) 3")
+        target_img = rearrange(target_img, "h w 3 -> (h w) 3")
+        return rays_o, rays_d, target_img
+
+class NeRFDataModule(pl.LightningDataModule):
+    def __init__(self, batch_size=1, n_training=100, testimg_idx=101, dataset_dir=data_root_path):
+        super().__init__()
+        self.dataset_dir = dataset_dir
+        self.batch_size = batch_size
+        self.n_training = n_training
+
     def setup(self, stage=None):
         # print(self.img_size)
         if stage == 'fit' or stage is None:
-            self.train_dataset = MNIST(self.dataset_dir, download=True, transform=self.transform, train=True)
-            self.val_dataset = MNIST(self.dataset_dir, download=True, transform=self.transform, train=False)
+            self.train_dataset = NeRFDataset(self.dataset_dir)
+            self.val_dataset = NeRFDataset(self.dataset_dir)
         if stage == 'test' or stage is None:
-            self.test_dataset = MNIST(self.dataset_dir, download=True, transform=self.transform, train=False)
+            self.test_dataset = NeRFDataset(self.dataset_dir)
 
     def train_dataloader(self):
-        return DataLoader(self.train_dataset, batch_size=self.batch_size, shuffle=True)
+        return DataLoader(self.train_dataset, batch_size=self.batch_size, shuffle=False)
 
     def val_dataloader(self):
         return DataLoader(self.val_dataset, batch_size=self.batch_size, shuffle=False)

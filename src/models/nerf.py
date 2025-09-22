@@ -46,13 +46,9 @@ class PositionalEncoder(nn.Module):
     """
     return torch.concat([fn(x) for fn in self.embed_fns], dim=-1)
 
-class NeRF(pl.LightningModule):
-    def __init__(self, d_input=3, n_layers=8, d_filter=256, skip=(4,), d_viewdirs=None):
+class NeRFModule(nn.Module):
+    def __init__(self, d_input, n_layers, d_filter, skip, d_viewdirs):
         super().__init__()
-
-        # Create encoders for points and view directions
-        self.encoder = PositionalEncoder(3, 10)
-        self.viewdirs_encoder = PositionalEncoder(3, 4)
         self.d_input = d_input
         self.skip = skip
         self.act = nn.functional.relu
@@ -75,21 +71,43 @@ class NeRF(pl.LightningModule):
         else:
             # If no viewdirs, use simpler output
             self.output = nn.Linear(d_filter, 4)
-    def get_rays(self, height, width, focal_length, c2w):
-        i, j = torch.meshgrid(
-            torch.arange(100, dtype=torch.float32),
-            torch.arange(100, dtype=torch.float32),
-            indexing='ij'
-        )
-        i, j = i.transpose(-1, -2), j.transpose(-1, -2)
-        focal_length = 10
-        # trick: create pinhole 
-        directions = torch.stack([(i - width * 0.5) / focal_length, -(j - height * 0.5) / focal_length, -torch.ones_like(i)], dim=-1)
-        print(directions.shape)
-        # convert local direction to global direction
-        rays_d = torch.sum(directions[..., None, :] * c2w[:3, :3], dim=-1)
-        rays_o = c2w[:3, -1].expand(rays_d.shape)
-        return rays_o, rays_d
+    def forward(self, x, viewdirs):
+        # Cannot use viewdirs if instantiated with d_viewdirs = None
+        if self.d_viewdirs is None and viewdirs is not None:
+            raise ValueError('Cannot input x_direction if d_viewdirs was not given.')
+
+        # Apply forward pass up to bottleneck
+        x_input = x
+        for i, layer in enumerate(self.layers):
+            x = self.act(layer(x))
+            if i in self.skip:
+                x = torch.cat([x, x_input], dim=-1)
+
+        # Apply bottleneck
+        if self.d_viewdirs is not None:
+            # Split alpha from network output
+            alpha = self.alpha_out(x)
+
+            # Pass through bottleneck to get RGB
+            x = self.rgb_filters(x)
+            x = torch.concat([x, viewdirs], dim=-1)
+            x = self.act(self.branch(x))
+            x = self.output(x)
+
+            # Concatenate alphas to output
+            x = torch.concat([x, alpha], dim=-1)
+        else:
+            # Simple output
+            x = self.output(x)
+        return x
+
+class NeRF(pl.LightningModule):
+    def __init__(self, d_input=3, n_layers=8, d_filter=256, skip=(4,), d_viewdirs=None):
+        super().__init__()
+
+        # Create encoders for points and view directions
+        self.encoder = PositionalEncoder(3, 10)
+        self.viewdirs_encoder = PositionalEncoder(3, 4)
 
     def sample_stratified(
         self,
@@ -281,36 +299,13 @@ class NeRF(pl.LightningModule):
         pts = rays_o[..., None, :] + rays_d[..., None, :] * z_vals_combined[..., :, None]  # [N_rays, N_samples + n_samples, 3]
         return pts, z_vals_combined, new_z_samples
     
-    def forward(self, x, viewdirs=None):
+    def forward(self, rays_o, rays_d, near, far):
         r"""
         Forward pass with optional view direction.
         """
+        # 1. sample query points along each ray
+        query_points, z_vals = self.sample_stratified(
+            rays_o=rays_o, rays_d=rays_d, near=near, far=far
+        )
 
-        # Cannot use viewdirs if instantiated with d_viewdirs = None
-        if self.d_viewdirs is None and viewdirs is not None:
-            raise ValueError('Cannot input x_direction if d_viewdirs was not given.')
-
-        # Apply forward pass up to bottleneck
-        x_input = x
-        for i, layer in enumerate(self.layers):
-            x = self.act(layer(x))
-            if i in self.skip:
-                x = torch.cat([x, x_input], dim=-1)
-
-        # Apply bottleneck
-        if self.d_viewdirs is not None:
-            # Split alpha from network output
-            alpha = self.alpha_out(x)
-
-            # Pass through bottleneck to get RGB
-            x = self.rgb_filters(x)
-            x = torch.concat([x, viewdirs], dim=-1)
-            x = self.act(self.branch(x))
-            x = self.output(x)
-
-            # Concatenate alphas to output
-            x = torch.concat([x, alpha], dim=-1)
-        else:
-            # Simple output
-            x = self.output(x)
-        return x
+        # 2. prepare batches

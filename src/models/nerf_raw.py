@@ -8,9 +8,10 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d
 from tqdm import trange
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+# device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+device = 'cpu'
 
-data = np.load('assets/tiny_nerf_data.npz')
+data = np.load('/home/patrick/workspace/cv/pat-cv-lifecycle/datasets/tiny_nerf_data.npz')
 images = data['images']
 poses = data['poses']
 focal = data['focal']
@@ -59,19 +60,21 @@ def get_rays(height, width, focal_length, c2w):
     # convert local direction to global direction
     rays_d = torch.sum(directions[..., None, :] * c2w[:3, :3], dim=-1)
     rays_o = c2w[:3, -1].expand(rays_d.shape)
+    print(rays_o.shape, rays_d.shape)
     return rays_o, rays_d
+    
 
-# Gather as torch tensors
+# # Gather as torch tensors
 images = torch.from_numpy(data['images'][:n_training]).to(device)
 poses = torch.from_numpy(data['poses']).to(device)
 focal = torch.from_numpy(data['focal']).to(device)
 testimg = torch.from_numpy(data['images'][testimg_idx]).to(device)
 testpose = torch.from_numpy(data['poses'][testimg_idx]).to(device)
 
-# Grab rays from sample image
+# # Grab rays from sample image
 height, width = images.shape[1:3]
-with torch.no_grad():
-  ray_origin, ray_direction = get_rays(height, width, focal, testpose)
+# with torch.no_grad():
+ray_origin, ray_direction = get_rays(height, width, focal, testpose)
 
 print('Ray Origin')
 print(ray_origin.shape)
@@ -119,17 +122,17 @@ def sample_stratified(
   pts = rays_o[..., None, :] + rays_d[..., None, :] * z_vals[..., :, None]
   return pts, z_vals
 
-y_vals = torch.zeros_like(z_vals)
+# y_vals = torch.zeros_like(z_vals)
 
-_, z_vals_unperturbed = sample_stratified(rays_o, rays_d, near, far, n_samples,
-                                  perturb=False, inverse_depth=inverse_depth)
-plt.plot(z_vals_unperturbed[0].cpu().numpy(), 1 + y_vals[0].cpu().numpy(), 'b-o')
-plt.plot(z_vals[0].cpu().numpy(), y_vals[0].cpu().numpy(), 'r-o')
-plt.ylim([-1, 2])
-plt.title('Stratified Sampling (blue) with Perturbation (red)')
-ax = plt.gca()
-ax.axes.yaxis.set_visible(False)
-plt.grid(True)
+# _, z_vals_unperturbed = sample_stratified(rays_o, rays_d, near, far, n_samples,
+#                                   perturb=False, inverse_depth=inverse_depth)
+# plt.plot(z_vals_unperturbed[0].cpu().numpy(), 1 + y_vals[0].cpu().numpy(), 'b-o')
+# plt.plot(z_vals[0].cpu().numpy(), y_vals[0].cpu().numpy(), 'r-o')
+# plt.ylim([-1, 2])
+# plt.title('Stratified Sampling (blue) with Perturbation (red)')
+# ax = plt.gca()
+# ax.axes.yaxis.set_visible(False)
+# plt.grid(True)
 
 class PositionalEncoder(nn.Module):
   r"""
@@ -169,27 +172,27 @@ class PositionalEncoder(nn.Module):
     return torch.concat([fn(x) for fn in self.embed_fns], dim=-1)
   
 # Create encoders for points and view directions
-encoder = PositionalEncoder(3, 10)
-viewdirs_encoder = PositionalEncoder(3, 4)
+# encoder = PositionalEncoder(3, 10)
+# viewdirs_encoder = PositionalEncoder(3, 4)
 
-# Grab flattened points and view directions
-pts_flattened = pts.reshape(-1, 3)
-viewdirs = rays_d / torch.norm(rays_d, dim=-1, keepdim=True)
-flattened_viewdirs = viewdirs[:, None, ...].expand(pts.shape).reshape((-1, 3))
+# # Grab flattened points and view directions
+# pts_flattened = pts.reshape(-1, 3)
+# viewdirs = rays_d / torch.norm(rays_d, dim=-1, keepdim=True)
+# flattened_viewdirs = viewdirs[:, None, ...].expand(pts.shape).reshape((-1, 3))
 
-# Encode inputs
-encoded_points = encoder(pts_flattened)
-encoded_viewdirs = viewdirs_encoder(flattened_viewdirs)
+# # Encode inputs
+# encoded_points = encoder(pts_flattened)
+# encoded_viewdirs = viewdirs_encoder(flattened_viewdirs)
 
-print('Encoded Points')
-print(encoded_points.shape)
-print(torch.min(encoded_points), torch.max(encoded_points), torch.mean(encoded_points))
-print('')
+# print('Encoded Points')
+# print(encoded_points.shape)
+# print(torch.min(encoded_points), torch.max(encoded_points), torch.mean(encoded_points))
+# print('')
 
-print(encoded_viewdirs.shape)
-print('Encoded Viewdirs')
-print(torch.min(encoded_viewdirs), torch.max(encoded_viewdirs), torch.mean(encoded_viewdirs))
-print('')
+# print(encoded_viewdirs.shape)
+# print('Encoded Viewdirs')
+# print(torch.min(encoded_viewdirs), torch.max(encoded_viewdirs), torch.mean(encoded_viewdirs))
+# print('')
 
 class NeRF(nn.Module):
   r"""
@@ -707,12 +710,13 @@ def train():
   if not one_image_per_step:
     height, width = images.shape[1:3]
     all_rays = torch.stack([torch.stack(get_rays(height, width, focal, p), 0)
-                        for p in poses[:n_training]], 0)
-    rays_rgb = torch.cat([all_rays, images[:, None]], 1)
-    rays_rgb = torch.permute(rays_rgb, [0, 2, 3, 1, 4])
+                        for p in poses[:n_training]], 0) # (num_poses, 100, 100, 3)
+    rays_rgb = torch.cat([all_rays, images[:, None]], 1) # images[: None] is (106, 1, 100, 100, 3)
+    # -> (106, 1 + num_poses, 100, 100, 3)
+    rays_rgb = torch.permute(rays_rgb, [0, 2, 3, 1, 4]) # (106, 100, 100, 1 + num_poses, 3)
     rays_rgb = rays_rgb.reshape([-1, 3, 3])
     rays_rgb = rays_rgb.type(torch.float32)
-    rays_rgb = rays_rgb[torch.randperm(rays_rgb.shape[0])]
+    rays_rgb = rays_rgb[torch.randperm(rays_rgb.shape[0])] # shuffle
     i_batch = 0
 
   train_psnrs = []
