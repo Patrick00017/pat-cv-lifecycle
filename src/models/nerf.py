@@ -108,6 +108,9 @@ class NeRF(pl.LightningModule):
         # Create encoders for points and view directions
         self.encoder = PositionalEncoder(3, 10)
         self.viewdirs_encoder = PositionalEncoder(3, 4)
+        # create model
+        self.coarse_model = NeRFModule(d_input, n_layers, d_filter, skip, d_viewdirs)
+        self.fine_model = NeRFModule(d_input, n_layers, d_filter, skip, d_viewdirs)
 
     def sample_stratified(
         self,
@@ -299,7 +302,42 @@ class NeRF(pl.LightningModule):
         pts = rays_o[..., None, :] + rays_d[..., None, :] * z_vals_combined[..., :, None]  # [N_rays, N_samples + n_samples, 3]
         return pts, z_vals_combined, new_z_samples
     
-    def forward(self, rays_o, rays_d, near, far):
+    def get_chunks(self, inputs: torch.Tensor, chunksize: int = 2**15) -> List[torch.Tensor]:
+        r"""
+        Divide an input into chunks.
+        """
+        return [inputs[i:i + chunksize] for i in range(0, inputs.shape[0], chunksize)]
+    def prepare_chunks(
+        self,
+        points: torch.Tensor,
+        encoding_function: Callable[[torch.Tensor], torch.Tensor],
+        chunksize: int = 2**15
+    ) -> List[torch.Tensor]:
+        r"""
+        Encode and chunkify points to prepare for NeRF model.
+        """
+        points = points.reshape((-1, 3))
+        points = encoding_function(points)
+        points = self.get_chunks(points, chunksize=chunksize)
+        return points
+    def prepare_viewdirs_chunks(
+        self,
+        points: torch.Tensor,
+        rays_d: torch.Tensor,
+        encoding_function: Callable[[torch.Tensor], torch.Tensor],
+        chunksize: int = 2**15
+    ) -> List[torch.Tensor]:
+        r"""
+        Encode and chunkify viewdirs to prepare for NeRF model.
+        """
+        # Prepare the viewdirs
+        viewdirs = rays_d / torch.norm(rays_d, dim=-1, keepdim=True)
+        viewdirs = viewdirs[:, None, ...].expand(points.shape).reshape((-1, 3))
+        viewdirs = encoding_function(viewdirs)
+        viewdirs = self.get_chunks(viewdirs, chunksize=chunksize)
+        return viewdirs
+    
+    def forward(self, rays_o, rays_d, near, far, n_samples_hierarchical=0, chunksize=2**15):
         r"""
         Forward pass with optional view direction.
         """
@@ -309,3 +347,64 @@ class NeRF(pl.LightningModule):
         )
 
         # 2. prepare batches
+        batches = self.prepare_chunks(query_points, encoding_function=self.encoder, chunksize=chunksize)
+        if self.viewdirs_encoder is not None:
+            batches_viewdirs = self.prepare_viewdirs_chunks(query_points, rays_d, self.viewdirs_encoding_fn, chunksize=chunksize)
+        else:
+            batches_viewdirs = [None] * len(batches)
+        
+        # 3. coarse model forward
+        predictions = []
+        for batch, batch_viewdirs in zip(batches, batches_viewdirs):
+            predictions.append(self.coarse_model(batch, viewdirs=batch_viewdirs))
+        raw = torch.cat(predictions, dim=0)
+        raw = raw.reshape(list(query_points.shape[:2]) + [raw.shape[-1]])
+
+        # Perform differentiable volume rendering to re-synthesize the RGB image.
+        rgb_map, depth_map, acc_map, weights = self.raw2outputs(raw, z_vals, rays_d)
+        # rgb_map, depth_map, acc_map, weights = render_volume_density(raw, rays_o, z_vals)
+        outputs = {
+            'z_vals_stratified': z_vals
+        }
+
+        # 4. fine model forward
+        # Fine model pass.
+        if n_samples_hierarchical > 0:
+            # Save previous outputs to return.
+            rgb_map_0, depth_map_0, acc_map_0 = rgb_map, depth_map, acc_map
+
+            # Apply hierarchical sampling for fine query points.
+            query_points, z_vals_combined, z_hierarch = self.sample_hierarchical(
+            rays_o, rays_d, z_vals, weights, n_samples_hierarchical)
+
+            # Prepare inputs as before.
+            batches = self.prepare_chunks(query_points, self.encoder, chunksize=chunksize)
+            if self.viewdirs_encoder is not None:
+                batches_viewdirs = self.prepare_viewdirs_chunks(query_points, rays_d,
+                                                        self.viewdirs_encoder,
+                                                        chunksize=chunksize)
+            else:
+                batches_viewdirs = [None] * len(batches)
+
+            # Forward pass new samples through fine model.
+            fine_model = fine_model if fine_model is not None else coarse_model
+            predictions = []
+            for batch, batch_viewdirs in zip(batches, batches_viewdirs):
+                predictions.append(fine_model(batch, viewdirs=batch_viewdirs))
+            raw = torch.cat(predictions, dim=0)
+            raw = raw.reshape(list(query_points.shape[:2]) + [raw.shape[-1]])
+
+            # Perform differentiable volume rendering to re-synthesize the RGB image.
+            rgb_map, depth_map, acc_map, weights = self.raw2outputs(raw, z_vals_combined, rays_d)
+            
+            # Store outputs.
+            outputs['z_vals_hierarchical'] = z_hierarch
+            outputs['rgb_map_0'] = rgb_map_0
+            outputs['depth_map_0'] = depth_map_0
+            outputs['acc_map_0'] = acc_map_0
+        # Store outputs.
+        outputs['rgb_map'] = rgb_map
+        outputs['depth_map'] = depth_map
+        outputs['acc_map'] = acc_map
+        outputs['weights'] = weights
+        return outputs
