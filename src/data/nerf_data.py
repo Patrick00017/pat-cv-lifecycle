@@ -55,9 +55,9 @@ class NeRFDataset(Dataset):
         height, width = target_img.shape[:2]
         target_pose = self.poses[target_img_idx]
         rays_o, rays_d = self.get_rays(height, width, self.focal, target_pose)
-        rays_o = rearrange(rays_o, "h w 3 -> (h w) 3")
-        rays_d = rearrange(rays_d, "h w 3 -> (h w) 3")
-        target_img = rearrange(target_img, "h w 3 -> (h w) 3")
+        rays_o = rearrange(rays_o, "h w c -> (h w) c")
+        rays_d = rearrange(rays_d, "h w c -> (h w) c")
+        target_img = rearrange(target_img, "h w c -> (h w) c")
         return rays_o, rays_d, target_img
 
 class NeRFDataModule(pl.LightningDataModule):

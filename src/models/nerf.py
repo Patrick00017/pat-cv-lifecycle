@@ -8,43 +8,45 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d
 from tqdm import trange
 import pytorch_lightning as pl
+import yaml
+from data.nerf_data import NeRFDataModule
 
 class PositionalEncoder(nn.Module):
-  r"""
-  Sine-cosine positional encoder for input points.
-  """
-  def __init__(
-    self,
-    d_input: int,
-    n_freqs: int,
-    log_space: bool = False
-  ):
-    super().__init__()
-    self.d_input = d_input
-    self.n_freqs = n_freqs
-    self.log_space = log_space
-    self.d_output = d_input * (1 + 2 * self.n_freqs)
-    self.embed_fns = [lambda x: x]
-
-    # Define frequencies in either linear or log scale
-    if self.log_space:
-      freq_bands = 2.**torch.linspace(0., self.n_freqs - 1, self.n_freqs)
-    else:
-      freq_bands = torch.linspace(2.**0., 2.**(self.n_freqs - 1), self.n_freqs)
-
-    # Alternate sin and cos
-    for freq in freq_bands:
-      self.embed_fns.append(lambda x, freq=freq: torch.sin(x * freq))
-      self.embed_fns.append(lambda x, freq=freq: torch.cos(x * freq))
-  
-  def forward(
-    self,
-    x
-  ) -> torch.Tensor:
     r"""
-    Apply positional encoding to input.
+    Sine-cosine positional encoder for input points.
     """
-    return torch.concat([fn(x) for fn in self.embed_fns], dim=-1)
+    def __init__(
+        self,
+        d_input: int,
+        n_freqs: int,
+        log_space: bool = False
+    ):
+        super().__init__()
+        self.d_input = d_input
+        self.n_freqs = n_freqs
+        self.log_space = log_space
+        self.d_output = d_input * (1 + 2 * self.n_freqs)
+        self.embed_fns = [lambda x: x]
+
+        # Define frequencies in either linear or log scale
+        if self.log_space:
+            freq_bands = 2.**torch.linspace(0., self.n_freqs - 1, self.n_freqs)
+        else:
+            freq_bands = torch.linspace(2.**0., 2.**(self.n_freqs - 1), self.n_freqs)
+
+        # Alternate sin and cos
+        for freq in freq_bands:
+            self.embed_fns.append(lambda x, freq=freq: torch.sin(x * freq))
+            self.embed_fns.append(lambda x, freq=freq: torch.cos(x * freq))
+    
+    def forward(
+        self,
+        x
+    ) -> torch.Tensor:
+        r"""
+        Apply positional encoding to input.
+        """
+        return torch.concat([fn(x) for fn in self.embed_fns], dim=-1)
 
 class NeRFModule(nn.Module):
     def __init__(self, d_input, n_layers, d_filter, skip, d_viewdirs):
@@ -102,15 +104,33 @@ class NeRFModule(nn.Module):
         return x
 
 class NeRF(pl.LightningModule):
-    def __init__(self, d_input=3, n_layers=8, d_filter=256, skip=(4,), d_viewdirs=None):
+    def __init__(self, config):
         super().__init__()
-
+        self.config = config
+        self.use_viewdirs = config["encoder"]["use_viewdirs"]
+        self.use_fine_model = config["model"]["use_fine_model"]
         # Create encoders for points and view directions
-        self.encoder = PositionalEncoder(3, 10)
-        self.viewdirs_encoder = PositionalEncoder(3, 4)
+        self.encoder = PositionalEncoder(config["encoder"]["d_input"], config["encoder"]["n_freqs"], config["encoder"]["log_space"])
+        self.viewdirs_encoder = PositionalEncoder(config["encoder"]["d_input"], config["encoder"]["n_freqs_views"]) if self.use_viewdirs else None
+        self.d_viewdirs = self.viewdirs_encoder.d_output if self.use_viewdirs else None
         # create model
-        self.coarse_model = NeRFModule(d_input, n_layers, d_filter, skip, d_viewdirs)
-        self.fine_model = NeRFModule(d_input, n_layers, d_filter, skip, d_viewdirs)
+        self.coarse_model = NeRFModule(
+            self.encoder.d_output, 
+            config["model"]["n_layers"], 
+            config["model"]["d_filter"], 
+            config["model"]["skip"], 
+            self.d_viewdirs
+        )
+        self.fine_model = NeRFModule(
+            self.encoder.d_output, 
+            config["model"]["n_layers_fine"], 
+            config["model"]["d_filter_fine"], 
+            config["model"]["skip"], 
+            self.d_viewdirs
+        ) if self.use_fine_model else None
+
+        self.near = 2.0
+        self.far = 6.0
 
     def sample_stratified(
         self,
@@ -310,21 +330,19 @@ class NeRF(pl.LightningModule):
     def prepare_chunks(
         self,
         points: torch.Tensor,
-        encoding_function: Callable[[torch.Tensor], torch.Tensor],
         chunksize: int = 2**15
     ) -> List[torch.Tensor]:
         r"""
         Encode and chunkify points to prepare for NeRF model.
         """
         points = points.reshape((-1, 3))
-        points = encoding_function(points)
+        points = self.encoder(points)
         points = self.get_chunks(points, chunksize=chunksize)
         return points
     def prepare_viewdirs_chunks(
         self,
         points: torch.Tensor,
         rays_d: torch.Tensor,
-        encoding_function: Callable[[torch.Tensor], torch.Tensor],
         chunksize: int = 2**15
     ) -> List[torch.Tensor]:
         r"""
@@ -333,26 +351,30 @@ class NeRF(pl.LightningModule):
         # Prepare the viewdirs
         viewdirs = rays_d / torch.norm(rays_d, dim=-1, keepdim=True)
         viewdirs = viewdirs[:, None, ...].expand(points.shape).reshape((-1, 3))
-        viewdirs = encoding_function(viewdirs)
+        viewdirs = self.viewdirs_encoder(viewdirs)
         viewdirs = self.get_chunks(viewdirs, chunksize=chunksize)
         return viewdirs
     
-    def forward(self, rays_o, rays_d, near, far, n_samples_hierarchical=0, chunksize=2**15):
+    def forward(self, rays_o, rays_d):
         r"""
         Forward pass with optional view direction.
         """
         # 1. sample query points along each ray
         query_points, z_vals = self.sample_stratified(
-            rays_o=rays_o, rays_d=rays_d, near=near, far=far
+            rays_o=rays_o, rays_d=rays_d, near=self.near, far=self.far, 
+            n_samples=self.config["stratified_sampling"]["n_samples"],
+            perturb=self.config["stratified_sampling"]["perturb"],
+            inverse_depth=self.config["stratified_sampling"]["inverse_depth"]
         )
 
         # 2. prepare batches
-        batches = self.prepare_chunks(query_points, encoding_function=self.encoder, chunksize=chunksize)
+        batches = self.prepare_chunks(query_points, chunksize=self.config["train"]["chunksize"])
         if self.viewdirs_encoder is not None:
-            batches_viewdirs = self.prepare_viewdirs_chunks(query_points, rays_d, self.viewdirs_encoding_fn, chunksize=chunksize)
+            batches_viewdirs = self.prepare_viewdirs_chunks(query_points, rays_d, chunksize=self.config["train"]["chunksize"])
         else:
             batches_viewdirs = [None] * len(batches)
-        
+        # print(f"check batch: batches->{batches[0].shape} batches_viewdirs->{batches_viewdirs[0].shape}")
+        # check batch: batches->torch.Size([16384, 63]) batches_viewdirs->torch.Size([16384, 27])
         # 3. coarse model forward
         predictions = []
         for batch, batch_viewdirs in zip(batches, batches_viewdirs):
@@ -369,25 +391,27 @@ class NeRF(pl.LightningModule):
 
         # 4. fine model forward
         # Fine model pass.
-        if n_samples_hierarchical > 0:
+        if self.config["hierarchical_sampling"]["n_samples_hierarchical"] > 0:
             # Save previous outputs to return.
             rgb_map_0, depth_map_0, acc_map_0 = rgb_map, depth_map, acc_map
 
             # Apply hierarchical sampling for fine query points.
             query_points, z_vals_combined, z_hierarch = self.sample_hierarchical(
-            rays_o, rays_d, z_vals, weights, n_samples_hierarchical)
+                rays_o, rays_d, z_vals, weights,
+                n_samples=self.config["hierarchical_sampling"]["n_samples_hierarchical"],
+                perturb=self.config["hierarchical_sampling"]["perturb_hierarchical"]
+            )
 
             # Prepare inputs as before.
-            batches = self.prepare_chunks(query_points, self.encoder, chunksize=chunksize)
+            batches = self.prepare_chunks(query_points, chunksize=self.config["train"]["chunksize"])
             if self.viewdirs_encoder is not None:
                 batches_viewdirs = self.prepare_viewdirs_chunks(query_points, rays_d,
-                                                        self.viewdirs_encoder,
-                                                        chunksize=chunksize)
+                                                        chunksize=self.config["train"]["chunksize"])
             else:
                 batches_viewdirs = [None] * len(batches)
 
             # Forward pass new samples through fine model.
-            fine_model = fine_model if fine_model is not None else coarse_model
+            fine_model = self.fine_model if self.fine_model is not None else self.coarse_model
             predictions = []
             for batch, batch_viewdirs in zip(batches, batches_viewdirs):
                 predictions.append(fine_model(batch, viewdirs=batch_viewdirs))
@@ -408,3 +432,53 @@ class NeRF(pl.LightningModule):
         outputs['acc_map'] = acc_map
         outputs['weights'] = weights
         return outputs
+    
+    def training_step(self, batch, batch_idx):
+        rays_o, rays_d, target_img = batch
+        # remove batchsize because batchsize is constantly 1
+        rays_o = rays_o[0]
+        rays_d = rays_d[0]
+        target_img = target_img[0]
+
+        outputs = self.forward(rays_o, rays_d)
+        rgb_predicted = outputs['rgb_map']
+        loss = torch.nn.functional.mse_loss(rgb_predicted, target_img.reshape(-1, 3))
+        print("Loss:", loss.item())
+        return loss
+    def configure_optimizers(self):
+        optimizer = torch.optim.SGD(self.parameters(), lr=self.config["optimizer"]["lr"])
+        return optimizer
+    
+if __name__ == "__main__":
+    pl.seed_everything(7)
+
+    # read yaml config file
+    with open("configs/nerf.yaml", "r") as file:
+        cfg = yaml.safe_load(file)
+
+    # dataloader = get_mnist_train_loader(cfg["train"]["batch_size"])
+    # dm = Cifar10DataModule(batch_size=cfg["train"]["batch_size"])
+    dm = NeRFDataModule()
+
+    model = NeRF(cfg)
+
+    trainer = pl.Trainer(
+        max_epochs=100,
+        accelerator='gpu',
+        devices=[0],
+        # logger=TensorBoardLogger("logs/", name="vit_mnist"),
+        # callbacks=[LearningRateMonitor(logging_interval="step")],
+    )
+    trainer.fit(model, datamodule=dm)
+    # trainer.test(model, datamodule=dm)
+
+    # save last ckpt
+    # output_dir = cfg["train"]["output_dir"]
+    # model_name = cfg["model"]["name"]
+    # final_dir_path = f"{output_dir}/{model_name}"
+    # if not os.path.exists(final_dir_path):
+    #     os.makedirs(final_dir_path)
+    # torch.save(model.state_dict(), f"{final_dir_path}/last_checkpoint.pth")
+    # pprint(
+    #     f"train process complete. save checkpoint at {final_dir_path}/last_checkpoint.pth"
+    # )
