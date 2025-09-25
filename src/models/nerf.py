@@ -10,6 +10,8 @@ from tqdm import trange
 import pytorch_lightning as pl
 import yaml
 from data.nerf_data import NeRFDataModule
+from pytorch_lightning.loggers import TensorBoardLogger
+from pytorch_lightning.callbacks import LearningRateMonitor
 
 class PositionalEncoder(nn.Module):
     r"""
@@ -129,8 +131,8 @@ class NeRF(pl.LightningModule):
             self.d_viewdirs
         ) if self.use_fine_model else None
 
-        self.near = 2.0
-        self.far = 6.0
+        self.near = config["model"]["near"]
+        self.far = config["model"]["far"]
 
     def sample_stratified(
         self,
@@ -443,7 +445,11 @@ class NeRF(pl.LightningModule):
         outputs = self.forward(rays_o, rays_d)
         rgb_predicted = outputs['rgb_map']
         loss = torch.nn.functional.mse_loss(rgb_predicted, target_img.reshape(-1, 3))
-        print("Loss:", loss.item())
+        self.log(f"train_loss", loss, prog_bar=True)
+        if batch_idx % 10 == 0:
+            self.logger.experiment.add_image("train/target_img", target_img.reshape(100, 100, 3).permute(2, 0, 1), self.global_step)
+            self.logger.experiment.add_image("train/predict_img", rgb_predicted.reshape(100, 100, 3).permute(2, 0, 1), self.global_step)
+        
         return loss
     def configure_optimizers(self):
         optimizer = torch.optim.SGD(self.parameters(), lr=self.config["optimizer"]["lr"])
@@ -466,8 +472,8 @@ if __name__ == "__main__":
         max_epochs=100,
         accelerator='gpu',
         devices=[0],
-        # logger=TensorBoardLogger("logs/", name="vit_mnist"),
-        # callbacks=[LearningRateMonitor(logging_interval="step")],
+        logger=TensorBoardLogger("logs/", name="nerf"),
+        callbacks=[LearningRateMonitor(logging_interval="step")],
     )
     trainer.fit(model, datamodule=dm)
     # trainer.test(model, datamodule=dm)

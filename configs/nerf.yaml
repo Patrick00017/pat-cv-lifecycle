@@ -22,6 +22,8 @@ model:
     use_fine_model: True   # If set, creates a fine model
     d_filter_fine: 128     # Dimensions of linear layer filters of fine network
     n_layers_fine: 6       # Number of layers in fine network bottleneck
+    near: 2.0
+    far: 6.0
 
 # Hierarchical sampling
 hierarchical_sampling:
