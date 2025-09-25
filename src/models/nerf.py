@@ -158,16 +158,20 @@ class NeRF(pl.LightningModule):
             z_vals = 1./(1./near * (1.-t_vals) + 1./far * (t_vals))
 
         # Draw uniform samples from bins along ray
+        # if preturb is True, so add some noise into samples
         if perturb:
             mids = .5 * (z_vals[1:] + z_vals[:-1])
             upper = torch.concat([mids, z_vals[-1:]], dim=-1)
             lower = torch.concat([z_vals[:1], mids], dim=-1)
-            t_rand = torch.rand([n_samples], device=z_vals.device)
-            z_vals = lower + (upper - lower) * t_rand
-        z_vals = z_vals.expand(list(rays_o.shape[:-1]) + [n_samples])
+            t_rand = torch.rand([n_samples], device=z_vals.device) # noise
+            z_vals = lower + (upper - lower) * t_rand # add noise
+        # trick: expand z_vals like rays_o, so the samples can be mapped to specific ray
+        z_vals = z_vals.expand(list(rays_o.shape[:-1]) + [n_samples]) 
 
         # Apply scale from `rays_d` and offset from `rays_o` to samples
         # pts: (width, height, n_samples, 3)
+        # todo: update to einops
+        print(f"sample_stratified->{rays_o.shape}, {rays_d.shape}, {z_vals.shape}")
         pts = rays_o[..., None, :] + rays_d[..., None, :] * z_vals[..., :, None]
         return pts, z_vals
     
@@ -338,7 +342,7 @@ class NeRF(pl.LightningModule):
         Encode and chunkify points to prepare for NeRF model.
         """
         points = points.reshape((-1, 3))
-        points = self.encoder(points)
+        points = self.encoder(points) # etc: (pts num, 63)
         points = self.get_chunks(points, chunksize=chunksize)
         return points
     def prepare_viewdirs_chunks(
@@ -350,9 +354,12 @@ class NeRF(pl.LightningModule):
         r"""
         Encode and chunkify viewdirs to prepare for NeRF model.
         """
+        print(f"prepare_viewdirs_chunks-> {rays_d.shape}")
         # Prepare the viewdirs
-        viewdirs = rays_d / torch.norm(rays_d, dim=-1, keepdim=True)
+        viewdirs = rays_d / torch.norm(rays_d, dim=-1, keepdim=True) # normalize ray direction can get viewdirs
+        print(f"prepare_viewdirs_chunks-> {viewdirs.shape}")
         viewdirs = viewdirs[:, None, ...].expand(points.shape).reshape((-1, 3))
+        print(f"prepare_viewdirs_chunks-> {viewdirs.shape}")
         viewdirs = self.viewdirs_encoder(viewdirs)
         viewdirs = self.get_chunks(viewdirs, chunksize=chunksize)
         return viewdirs
