@@ -12,6 +12,7 @@ import yaml
 from data.nerf_data import NeRFDataModule
 from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning.callbacks import LearningRateMonitor
+from einops import rearrange, repeat
 
 class PositionalEncoder(nn.Module):
     r"""
@@ -52,6 +53,14 @@ class PositionalEncoder(nn.Module):
 
 class NeRFModule(nn.Module):
     def __init__(self, d_input, n_layers, d_filter, skip, d_viewdirs):
+        r'''
+        nerf network.
+        d_input: encoded points dim 
+        n_layers: how many mlp will be used
+        d_filter: can be understanded as hidden_dims
+        skip: layers will be merged
+        d_viewdirs: encoded viewdirs
+        '''
         super().__init__()
         self.d_input = d_input
         self.skip = skip
@@ -76,6 +85,13 @@ class NeRFModule(nn.Module):
             # If no viewdirs, use simpler output
             self.output = nn.Linear(d_filter, 4)
     def forward(self, x, viewdirs):
+        r'''
+        x: (chunksize, d_input)
+        viewdirs: (chunksize, d_viewdirs)
+
+        return:
+            (chunksize, 4)
+        '''
         # Cannot use viewdirs if instantiated with d_viewdirs = None
         if self.d_viewdirs is None and viewdirs is not None:
             raise ValueError('Cannot input x_direction if d_viewdirs was not given.')
@@ -146,6 +162,13 @@ class NeRF(pl.LightningModule):
         ) -> Tuple[torch.Tensor, torch.Tensor]:
         r"""
         Sample along ray from regularly-spaced bins.
+
+        rays_o: (all_chunksize, 3)
+        rays_d: (all_chunksize, 3)
+
+        return:
+            pts: (all_chunksize, n_samples, 3)
+            z_vals: (all_chunksize, n_samples)
         """
 
         # Grab samples for space integration along ray
@@ -170,9 +193,13 @@ class NeRF(pl.LightningModule):
 
         # Apply scale from `rays_d` and offset from `rays_o` to samples
         # pts: (width, height, n_samples, 3)
-        # todo: update to einops
-        print(f"sample_stratified->{rays_o.shape}, {rays_d.shape}, {z_vals.shape}")
-        pts = rays_o[..., None, :] + rays_d[..., None, :] * z_vals[..., :, None]
+        # rays_o (chunksize, 3) rays_d (chunksize, 3) z_vals (chunksize, n_samples)
+        # print(f"sample_stratified->{rays_o.shape}, {rays_d.shape}, {z_vals.shape}")
+        r_o = repeat(rays_o, "c d -> c 1 d")
+        r_d = repeat(rays_d, "c d -> c 1 d")
+        z_v = repeat(z_vals, "c n -> c n 1")
+        pts = r_o + r_d + z_v
+        # print(f"sample_stratified->{pts.shape}")
         return pts, z_vals
     
     def cumprod_exclusive(
@@ -382,14 +409,15 @@ class NeRF(pl.LightningModule):
             batches_viewdirs = self.prepare_viewdirs_chunks(query_points, rays_d, chunksize=self.config["train"]["chunksize"])
         else:
             batches_viewdirs = [None] * len(batches)
-        # print(f"check batch: batches->{batches[0].shape} batches_viewdirs->{batches_viewdirs[0].shape}")
         # check batch: batches->torch.Size([16384, 63]) batches_viewdirs->torch.Size([16384, 27])
         # 3. coarse model forward
         predictions = []
         for batch, batch_viewdirs in zip(batches, batches_viewdirs):
             predictions.append(self.coarse_model(batch, viewdirs=batch_viewdirs))
         raw = torch.cat(predictions, dim=0)
-        raw = raw.reshape(list(query_points.shape[:2]) + [raw.shape[-1]])
+        # raw (all_chunksize, 4) query_points (all_chunksize, n_samples, 3)
+        raw = rearrange(raw, "(c n) rgbd -> c n rgbd", c=query_points.shape[0], n=query_points.shape[1])
+        # raw = raw.reshape(list(query_points.shape[:2]) + [raw.shape[-1]])
 
         # Perform differentiable volume rendering to re-synthesize the RGB image.
         rgb_map, depth_map, acc_map, weights = self.raw2outputs(raw, z_vals, rays_d)
@@ -425,7 +453,8 @@ class NeRF(pl.LightningModule):
             for batch, batch_viewdirs in zip(batches, batches_viewdirs):
                 predictions.append(fine_model(batch, viewdirs=batch_viewdirs))
             raw = torch.cat(predictions, dim=0)
-            raw = raw.reshape(list(query_points.shape[:2]) + [raw.shape[-1]])
+            # raw = raw.reshape(list(query_points.shape[:2]) + [raw.shape[-1]])
+            raw = rearrange(raw, "(c n) rgbd -> c n rgbd", c=query_points.shape[0], n=query_points.shape[1])
 
             # Perform differentiable volume rendering to re-synthesize the RGB image.
             rgb_map, depth_map, acc_map, weights = self.raw2outputs(raw, z_vals_combined, rays_d)

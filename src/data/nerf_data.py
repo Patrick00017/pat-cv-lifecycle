@@ -17,6 +17,7 @@ class NeRFDataset(Dataset):
         self.n_training = n_training
 
         data = np.load(f"{self.dataset_dir}/tiny_nerf_data.npz")
+        self.testimg_idx = testimg_idx
         self.images = torch.from_numpy(data['images'])
         self.poses = torch.from_numpy(data['poses'])
         self.focal = torch.from_numpy(data['focal'])
@@ -40,7 +41,7 @@ class NeRFDataset(Dataset):
         focal_length = 10
         # trick: create pinhole 
         directions = torch.stack([(i - width * 0.5) / focal_length, -(j - height * 0.5) / focal_length, -torch.ones_like(i)], dim=-1)
-        print(directions.shape)
+        # print(directions.shape)
         # convert local direction to global direction
         rays_d = torch.sum(directions[..., None, :] * c2w[:3, :3], dim=-1)
         rays_o = c2w[:3, -1].expand(rays_d.shape)
@@ -50,10 +51,10 @@ class NeRFDataset(Dataset):
         return self.n_training
 
     def __getitem__(self, idx):
-        target_img_idx = np.random.randint(self.images.shape[0])
-        target_img = self.images[target_img_idx]
+        # target_img_idx = np.random.randint(self.images.shape[0])
+        target_img = self.images[self.testimg_idx]
         height, width = target_img.shape[:2]
-        target_pose = self.poses[target_img_idx]
+        target_pose = self.poses[self.testimg_idx]
         rays_o, rays_d = self.get_rays(height, width, self.focal, target_pose)
         rays_o = rearrange(rays_o, "h w c -> (h w) c")
         rays_d = rearrange(rays_d, "h w c -> (h w) c")
