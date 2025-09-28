@@ -504,7 +504,7 @@ if __name__ == "__main__":
     model = NeRF(cfg)
 
     trainer = pl.Trainer(
-        max_epochs=100,
+        max_epochs=10000,
         accelerator='gpu',
         devices=[0],
         logger=TensorBoardLogger("logs/", name="nerf"),

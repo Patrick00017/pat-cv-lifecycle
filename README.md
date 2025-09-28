@@ -49,3 +49,14 @@ your_cv_project/
 ├── requirements.txt       # Python 依赖
 └── README.md              # 项目说明、复现步骤
 ```
+
+## Modules
+1. VIT transformer
+2. Masked Auto Encoder
+3. NeRF
+4. Dino Linear Probe Segmentation
+
+## Plan
+1. InstantNGP
+2. TensoRF
+3. PixelNeRF
