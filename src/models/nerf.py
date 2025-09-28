@@ -381,12 +381,12 @@ class NeRF(pl.LightningModule):
         r"""
         Encode and chunkify viewdirs to prepare for NeRF model.
         """
-        print(f"prepare_viewdirs_chunks-> {rays_d.shape}")
+        # print(f"prepare_viewdirs_chunks-> {rays_d.shape}")
         # Prepare the viewdirs
         viewdirs = rays_d / torch.norm(rays_d, dim=-1, keepdim=True) # normalize ray direction can get viewdirs
-        print(f"prepare_viewdirs_chunks-> {viewdirs.shape}")
+        # print(f"prepare_viewdirs_chunks-> {viewdirs.shape}")
         viewdirs = viewdirs[:, None, ...].expand(points.shape).reshape((-1, 3))
-        print(f"prepare_viewdirs_chunks-> {viewdirs.shape}")
+        # print(f"prepare_viewdirs_chunks-> {viewdirs.shape}")
         viewdirs = self.viewdirs_encoder(viewdirs)
         viewdirs = self.get_chunks(viewdirs, chunksize=chunksize)
         return viewdirs
@@ -477,7 +477,6 @@ class NeRF(pl.LightningModule):
         rays_o = rays_o[0]
         rays_d = rays_d[0]
         target_img = target_img[0]
-
         outputs = self.forward(rays_o, rays_d)
         rgb_predicted = outputs['rgb_map']
         loss = torch.nn.functional.mse_loss(rgb_predicted, target_img.reshape(-1, 3))
