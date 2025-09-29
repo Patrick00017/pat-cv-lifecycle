@@ -50,7 +50,7 @@ your_cv_project/
 └── README.md              # 项目说明、复现步骤
 ```
 
-copy include direction from [tiny-cuda-nn](https://github.com/NVlabs/tiny-cuda-nn) for instant ngp. Thanks for amazing work.
+set include path to [tiny-cuda-nn](https://github.com/NVlabs/tiny-cuda-nn) for instant ngp. Thanks for amazing work.
 
 ## Modules
 1. VIT transformer
