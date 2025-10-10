@@ -4,5 +4,5 @@ outputs
 checkpoints
 logs/*
 *.pyc
-*.txt
+# *.txt
 src/pat_cv_lifecycle.egg-info
