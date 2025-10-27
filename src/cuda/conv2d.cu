@@ -3,23 +3,26 @@
 
 #define I 10
 #define J 10
-#define F_SIZE 3
+// #define F_SIZE 3
 #define DIV_ROUND_UP(n, d) (((n) + (d) - 1) / (d))
 
-void __global__ conv2d(float* a, float* f, float* p){
+void __global__ conv2d(float* a, float* f, float* p, int r){
     int col = blockIdx.x * blockDim.x + threadIdx.x;
     int row = blockIdx.y * blockDim.y + threadIdx.y;
-    int a_c_x = col;
-    int a_c_y = row;
-    int f_c_x = 1;
-    int f_c_y = 1;
+    // change pivot to left top, and the kernel width(height) is 2*r + 1
+    int a_start_x = col - r;
+    int a_start_y = row - r;
+    // int f_x = 0;
+    // int f_y = 0;
     float pvalue = 0.0f;
-    for(int i=-1;i<F_SIZE-1;i++){
-        for(int j=-1;j<F_SIZE-1;j++){
-            if(a_c_x + i < 0 || a_c_x + i >= I || a_c_y + j < 0 || a_c_y + j >= J)
+    for(int i=0;i<2*r+1;i++){
+        for(int j=0;j<2*r+1;j++){
+            int a_x = a_start_x + i;
+            int a_y = a_start_y + i;
+            if(a_x < 0 || a_x >= I || a_y < 0 || a_y >= J)
                 pvalue += 0.0;
             else
-                pvalue += a[(a_c_y + j)*I + a_c_x + i] * f[(f_c_y + j)*F_SIZE + f_c_x + i];
+                pvalue += a[a_y * I + a_x] * f[j*(2*r+1) + i];
         }
     }
     p[row*I + col] = pvalue;
@@ -29,6 +32,8 @@ int main(int argc, char* argv[]){
     // float A[WIDTH][WIDTH];
     // float B[WIDTH][WIDTH];
     // float P[WIDTH][WIDTH];
+    int r = 1;
+    int F_SIZE = 2*r + 1;
     float* A = (float*)malloc(sizeof(float) * I * J);
     float* F = (float*)malloc(sizeof(float) * F_SIZE * F_SIZE);
     float* P = (float*)malloc(sizeof(float) * I * J);
@@ -55,6 +60,7 @@ int main(int argc, char* argv[]){
         }
         printf("\n");
     }
+    F[r] *= 5;
 
     cudaMalloc((void**)&d_a, sizeof(float) * I * J);
     cudaMalloc((void**)&d_f, sizeof(float) * F_SIZE * F_SIZE);
@@ -65,7 +71,7 @@ int main(int argc, char* argv[]){
     dim3 block(10, 10, 1);
     dim3 grid(1, 1, 1);
     cudaEventRecord(start);
-    conv2d<<<grid, block>>>(d_a, d_f, d_p);
+    conv2d<<<grid, block>>>(d_a, d_f, d_p, r);
     cudaEventRecord(stop);
     cudaEventSynchronize(stop);
 
@@ -80,11 +86,10 @@ int main(int argc, char* argv[]){
         }
         printf("\n");
     }
-
+    free(A);
+    free(F);
+    // free(P);
     cudaFree(d_a);
     cudaFree(d_f);
     cudaFree(d_p);
-    free(A);
-    free(F);
-    free(P);
 }
