@@ -6,18 +6,26 @@ import copy
 import math
 from typing import List, Optional, Dict
 
+
 def _get_activation_fn(activation):
-    """Return an activation function given a string"""
+    """
+    Return an activation function given a string
+
+    params:
+        activation: ['relu', 'gelu', 'glu']
+    """
     if activation == "relu":
         return F.relu
     if activation == "gelu":
         return F.gelu
     if activation == "glu":
         return F.glu
-    raise RuntimeError(F"activation should be relu/gelu, not {activation}.")
+    raise RuntimeError(f"activation should be relu/gelu, not {activation}.")
+
 
 def _get_clones(module, N):
     return nn.ModuleList([copy.deepcopy(module) for i in range(N)])
+
 
 def _max_by_axis(the_list):
     # type: (List[List[int]]) -> List[int]
@@ -27,11 +35,14 @@ def _max_by_axis(the_list):
             maxes[index] = max(maxes[index], item)
     return maxes
 
+
 def nested_tensor_from_tensor_list(tensor_list: List[Tensor]):
     # TODO make this more general
     if tensor_list[0].ndim == 3:
         # TODO make it support different-sized images
-        max_size = _max_by_axis([list(img.shape) for img in tensor_list]) # get the image max size
+        max_size = _max_by_axis(
+            [list(img.shape) for img in tensor_list]
+        )  # get the image max size
         # min_size = tuple(min(s) for s in zip(*[img.shape for img in tensor_list]))
         batch_shape = [len(tensor_list)] + max_size
         b, c, h, w = batch_shape
@@ -41,9 +52,9 @@ def nested_tensor_from_tensor_list(tensor_list: List[Tensor]):
         mask = torch.ones((b, h, w), dtype=torch.bool, device=device)
         for img, pad_img, m in zip(tensor_list, tensor, mask):
             pad_img[: img.shape[0], : img.shape[1], : img.shape[2]].copy_(img)
-            m[: img.shape[1], :img.shape[2]] = False
+            m[: img.shape[1], : img.shape[2]] = False
     else:
-        raise ValueError('not supported')
+        raise ValueError("not supported")
     return NestedTensor(tensor, mask)
 
 
@@ -74,9 +85,9 @@ class NestedTensor(object):
     def __repr__(self):
         return str(self.tensors)
 
+
 def vit_grad_cam_reshape_transform(tensor, height=14, width=14):
-    result = tensor[:, 1 :  , :].reshape(tensor.size(0),
-        height, width, tensor.size(2))
+    result = tensor[:, 1:, :].reshape(tensor.size(0), height, width, tensor.size(2))
 
     # Bring the channels to the first dimension,
     # like in CNNs.
