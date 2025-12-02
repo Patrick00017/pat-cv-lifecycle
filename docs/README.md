@@ -1,0 +1,1 @@
+This directory is used to hold the knowledges and experiments, contrains txt, word, pdf files.
