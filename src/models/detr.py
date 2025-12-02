@@ -8,20 +8,27 @@ from typing import Optional, List, Dict
 from utils.misc import NestedTensor, nested_tensor_from_tensor_list
 from scipy.optimize import linear_sum_assignment
 from utils.box import generalized_box_iou, box_cxcywh_to_xyxy, box_xyxy_to_cxcywh
+from modules.backbone import Backbone, Joiner
+from modules.position_encoding import PositionEmbeddingSine
+from modules.transformer import Transformer
+
 
 class MLP(nn.Module):
-    """ Very simple multi-layer perceptron (also called FFN)"""
+    """Very simple multi-layer perceptron (also called FFN)"""
 
     def __init__(self, input_dim, hidden_dim, output_dim, num_layers):
         super().__init__()
         self.num_layers = num_layers
         h = [hidden_dim] * (num_layers - 1)
-        self.layers = nn.ModuleList(nn.Linear(n, k) for n, k in zip([input_dim] + h, h + [output_dim]))
+        self.layers = nn.ModuleList(
+            nn.Linear(n, k) for n, k in zip([input_dim] + h, h + [output_dim])
+        )
 
     def forward(self, x):
         for i, layer in enumerate(self.layers):
             x = F.relu(layer(x)) if i < self.num_layers - 1 else layer(x)
         return x
+
 
 class DETR(nn.Module):
     def __init__(self, backbone, transformer, num_classes, num_queries, aux_loss=False):
@@ -42,60 +49,86 @@ class DETR(nn.Module):
         features, pos = self.backbone(samples)
         src, mask = features[-1].decompose()
         assert mask is not None
-        hs = self.transformer(self.input_proj(src), mask, self.query_embed.weight, pos[-1])[0]
+        hs = self.transformer(
+            self.input_proj(src), mask, self.query_embed.weight, pos[-1]
+        )[0]
         # hs (1, num_queries, bs, dim)
         outputs_class = self.class_embed(hs)
         outputs_coord = self.bbox_embed(hs).sigmoid()
-        out = {'pred_logits': outputs_class[-1], 'pred_boxes': outputs_coord[-1]}
+        out = {"pred_logits": outputs_class[-1], "pred_boxes": outputs_coord[-1]}
         if self.aux_loss:
-            out['aux_outputs'] = self._set_aux_loss(outputs_class, outputs_coord)
+            out["aux_outputs"] = self._set_aux_loss(outputs_class, outputs_coord)
         return out
-    
+
     @torch.jit.unused
     def _set_aux_loss(self, outputs_class, outputs_coord):
         # this is a workaround to make torchscript happy, as torchscript
         # doesn't support dictionary with non-homogeneous values, such
         # as a dict having both a Tensor and a list.
-        return [{'pred_logits': a, 'pred_boxes': b}
-                for a, b in zip(outputs_class[:-1], outputs_coord[:-1])]
-    
+        return [
+            {"pred_logits": a, "pred_boxes": b}
+            for a, b in zip(outputs_class[:-1], outputs_coord[:-1])
+        ]
+
+
 class HungarianMatcher(nn.Module):
-    def __init__(self, cost_class:float=1, cost_bbox:float=1, cost_giou:float=1):
+    def __init__(
+        self, cost_class: float = 1, cost_bbox: float = 1, cost_giou: float = 1
+    ):
         super().__init__()
         self.cost_class = cost_class
         self.cost_bbox = cost_bbox
         self.cost_giou = cost_giou
-        assert cost_class != 0 or cost_bbox != 0 or cost_giou != 0, "all costs cant be 0"
-    
+        assert (
+            cost_class != 0 or cost_bbox != 0 or cost_giou != 0
+        ), "all costs cant be 0"
+
     @torch.no_grad()
     def forward(self, outputs, targets):
-        bs, num_queries = outputs['pred_logits'].shape[:2]
+        bs, num_queries = outputs["pred_logits"].shape[:2]
 
         # flatten to compute the cost matrices in a batch
-        out_prob = outputs['pred_logits'].flatten(0, 1).softmax(-1) # (bs*num_queries, num_classes)
-        out_bbox = outputs['pred_boxes'].flatten(0, 1) # (bs*num_queries, 4)
+        out_prob = (
+            outputs["pred_logits"].flatten(0, 1).softmax(-1)
+        )  # (bs*num_queries, num_classes)
+        out_bbox = outputs["pred_boxes"].flatten(0, 1)  # (bs*num_queries, 4)
 
         # concat the target labels and boxes
-        tgt_ids = torch.cat([v["labels"] for v in targets]) # (bs*n, 1)
-        tgt_bbox = torch.cat([v["boxes"] for v in targets]) # (bs*n, 4)
+        tgt_ids = torch.cat([v["labels"] for v in targets])  # (bs*n, 1)
+        tgt_bbox = torch.cat([v["boxes"] for v in targets])  # (bs*n, 4)
 
         cost_class = -out_prob[:, tgt_ids]
         cost_bbox = torch.cdist(out_bbox, tgt_bbox, p=1)
-        cost_giou = -generalized_box_iou(box_cxcywh_to_xyxy(out_bbox), box_cxcywh_to_xyxy(tgt_bbox))
+        cost_giou = -generalized_box_iou(
+            box_cxcywh_to_xyxy(out_bbox), box_cxcywh_to_xyxy(tgt_bbox)
+        )
 
         # final cost matrix
-        C = self.cost_bbox * cost_bbox + self.cost_class * cost_class + self.cost_giou * cost_giou
-        C = C.view(bs, num_queries, -1).cpu() # C.shape = (bs, num_queries, total_targets_across_all_batches)
+        C = (
+            self.cost_bbox * cost_bbox
+            + self.cost_class * cost_class
+            + self.cost_giou * cost_giou
+        )
+        C = C.view(
+            bs, num_queries, -1
+        ).cpu()  # C.shape = (bs, num_queries, total_targets_across_all_batches)
 
         sizes = [len(v["boxes"]) for v in targets]
         # here i -> bs, c -> bboxes, perfect trick.
-        indices = [linear_sum_assignment(c[i]) for i, c in enumerate(C.split(sizes, -1))]
-        return [(torch.as_tensor(i, dtype=torch.int64), torch.as_tensor(j, dtype=torch.int64)) for i, j in indices]
-
+        indices = [
+            linear_sum_assignment(c[i]) for i, c in enumerate(C.split(sizes, -1))
+        ]
+        return [
+            (
+                torch.as_tensor(i, dtype=torch.int64),
+                torch.as_tensor(j, dtype=torch.int64),
+            )
+            for i, j in indices
+        ]
 
 
 if __name__ == "__main__":
-    backbone = Backbone('resnet50', False, True, False)
+    backbone = Backbone("resnet50", False, True, False)
     pos_embed = PositionEmbeddingSine(num_pos_feats=256)
     joiner = Joiner(backbone, pos_embed)
     transformer = Transformer()

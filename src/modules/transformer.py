@@ -4,6 +4,7 @@ from torch import Tensor
 import torch.nn.functional as F
 import copy
 import math
+from einops import rearrange, repeat
 from typing import List, Optional, Dict
 from utils.misc import _get_activation_fn, _get_clones, _max_by_axis
 
@@ -18,6 +19,9 @@ class TransformerEncoderLayer(nn.Module):
         dropout: used in linear layer or attention layer
         activate: activate func will be used in this module(why str? easy for config)
         norm_before: if true, use layer norm first, or use layer norm last.
+    usage:
+        input: (B, C, D)
+        output: (B, C, D)
     """
 
     def __init__(
@@ -97,23 +101,36 @@ class TransformerEncoderLayer(nn.Module):
 
 
 class TransformerDecoderLayer(nn.Module):
+    """
+    Transformer Decoder Layer Module. This will be used in Transformer Decoder Module.
+    params:
+        d_model: model dim, means hidden space size in this module.
+        n_head: num head for nn.MultiheadAttention
+        d_ffn: feed forward layer dim
+        dropout: used in linear layer or attention layer
+        activate: activate func will be used in this module(why str? easy for config)
+        norm_before: if true, use layer norm first, or use layer norm last.
+    usage:
+        input: (B, C, D)
+        output: (B, C, D)
+    """
 
     def __init__(
         self,
         d_model,
-        nhead,
-        dim_feedforward=2048,
+        n_head,
+        d_ffn=2048,
         dropout=0.1,
         activation="relu",
-        normalize_before=False,
+        norm_before=False,
     ):
         super().__init__()
-        self.self_attn = nn.MultiheadAttention(d_model, nhead, dropout=dropout)
-        self.multihead_attn = nn.MultiheadAttention(d_model, nhead, dropout=dropout)
+        self.self_attn = nn.MultiheadAttention(d_model, n_head, dropout=dropout)
+        self.multihead_attn = nn.MultiheadAttention(d_model, n_head, dropout=dropout)
         # Implementation of Feedforward model
-        self.linear1 = nn.Linear(d_model, dim_feedforward)
+        self.linear1 = nn.Linear(d_model, d_ffn)
         self.dropout = nn.Dropout(dropout)
-        self.linear2 = nn.Linear(dim_feedforward, d_model)
+        self.linear2 = nn.Linear(d_ffn, d_model)
 
         self.norm1 = nn.LayerNorm(d_model)
         self.norm2 = nn.LayerNorm(d_model)
@@ -123,7 +140,7 @@ class TransformerDecoderLayer(nn.Module):
         self.dropout3 = nn.Dropout(dropout)
 
         self.activation = _get_activation_fn(activation)
-        self.normalize_before = normalize_before
+        self.norm_before = norm_before
 
     def with_pos_embed(self, tensor, pos: Optional[Tensor]):
         return tensor if pos is None else tensor + pos
@@ -201,7 +218,7 @@ class TransformerDecoderLayer(nn.Module):
         pos: Optional[Tensor] = None,
         query_pos: Optional[Tensor] = None,
     ):
-        if self.normalize_before:
+        if self.norm_before:
             return self.forward_pre(
                 tgt,
                 memory,
@@ -225,6 +242,16 @@ class TransformerDecoderLayer(nn.Module):
 
 
 class TransformerEncoder(nn.Module):
+    """
+    Transformer Encoder Module. This will be used in Transformer Module.
+    params:
+        encoder_layer: which encoder layer module will be used
+        num_layers: how many encoder layer module will be used
+        norm: use norm or not
+    usage:
+        input: (B, C, D)
+        output: (B, C, D)
+    """
 
     def __init__(self, encoder_layer, num_layers, norm=None):
         super().__init__()
@@ -256,6 +283,17 @@ class TransformerEncoder(nn.Module):
 
 
 class TransformerDecoder(nn.Module):
+    """
+    Transformer Decoder Module. This will be used in Transformer Module.
+    params:
+        decoder_layer: which decoder layer module will be used
+        num_layers: how many decoder layer module will be used
+        norm: use norm or not
+        return_intermediate: ability to return latent space
+    usage:
+        input: (B, C, D)
+        output: (B, C, D)
+    """
 
     def __init__(self, decoder_layer, num_layers, norm=None, return_intermediate=False):
         super().__init__()
@@ -306,6 +344,22 @@ class TransformerDecoder(nn.Module):
 
 
 class Transformer(nn.Module):
+    """
+    Transformer Module.
+    params:
+        d_model: model dim
+        n_head: num head
+        num_encoder_layers: how many encoder layers
+        num_decoder_layers: how many decoder layers
+        d_ffn: ffn dim
+        dropout: dropout
+        activation: activate func name
+        norm_before: is use norm before
+        return_intermediate_dec: is return latent space in the decoder
+    usage:
+        input: (B, C, H, W)
+        output: (B, C, D)
+    """
 
     def __init__(
         self,
@@ -353,8 +407,10 @@ class Transformer(nn.Module):
     def forward(self, src, mask, query_embed, pos_embed):
         # flatten NxCxHxW to HWxNxC
         bs, c, h, w = src.shape
-        src = src.flatten(2).permute(2, 0, 1)
+        src = rearrange(src, "b c h w -> (h w) b c")
+        # src = src.flatten(2).permute(2, 0, 1)
         pos_embed = pos_embed.flatten(2).permute(2, 0, 1)
+        pos_embed = rearrange(pos_embed, "b c h w -> (h w) b c")
         query_embed = query_embed.unsqueeze(1).repeat(1, bs, 1)
         mask = mask.flatten(1)
 
