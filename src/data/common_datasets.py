@@ -9,6 +9,10 @@ from torchvision.datasets import VisionDataset
 
 # pycocotools is a required dependency
 from pycocotools.coco import COCO
+import os
+import json
+from PIL import Image
+from collections import defaultdict
 
 
 data_root_path = "datasets/"
