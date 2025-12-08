@@ -58,7 +58,6 @@ class TransformerEncoderLayer(nn.Module):
         src_key_padding_mask: Optional[Tensor] = None,
         pos: Optional[Tensor] = None,
     ):
-        super().__init__()
         q = k = self.with_pos_embed(src, pos)
         src2 = self.self_attn(
             q, k, value=src, attn_mask=src_mask, key_padding_mask=src_key_padding_mask
@@ -409,7 +408,7 @@ class Transformer(nn.Module):
         bs, c, h, w = src.shape
         src = rearrange(src, "b c h w -> (h w) b c")
         # src = src.flatten(2).permute(2, 0, 1)
-        pos_embed = pos_embed.flatten(2).permute(2, 0, 1)
+        # pos_embed = pos_embed.flatten(2).permute(2, 0, 1)
         pos_embed = rearrange(pos_embed, "b c h w -> (h w) b c")
         query_embed = query_embed.unsqueeze(1).repeat(1, bs, 1)
         mask = mask.flatten(1)

@@ -5,12 +5,21 @@ import torch.nn as nn
 import torch.nn.functional as F
 from einops import rearrange, repeat
 from typing import Optional, List, Dict
-from utils.misc import NestedTensor, nested_tensor_from_tensor_list
 from scipy.optimize import linear_sum_assignment
-from utils.box import generalized_box_iou, box_cxcywh_to_xyxy, box_xyxy_to_cxcywh
 from modules.backbone import Backbone, Joiner
+from utils.box import generalized_box_iou, box_cxcywh_to_xyxy, box_xyxy_to_cxcywh
+from utils.misc import NestedTensor, nested_tensor_from_tensor_list
 from modules.position_encoding import PositionEmbeddingSine
 from modules.transformer import Transformer
+
+
+# show tensor shape in vscode debugger
+def custom_repr(self):
+    return f"{{Tensor:{tuple(self.shape)}}} {original_repr(self)}"
+
+
+original_repr = torch.Tensor.__repr__
+torch.Tensor.__repr__ = custom_repr
 
 
 class MLP(nn.Module):
@@ -133,19 +142,7 @@ if __name__ == "__main__":
     joiner = Joiner(backbone, pos_embed)
     transformer = Transformer()
     detr = DETR(joiner, transformer, 10, 100)
-    # print(backbone)
     x = [torch.randn((3, 400, 600)), torch.randn((3, 600, 400))]
-    # x_nest = nested_tensor_from_tensor_list(x)
-    # output, pos = net(x_nest)
-    # # for name, value in output.items():
-    # #     print(f"{name} -> {value.tensors.shape} -> {value.mask.shape}")
-    # # for elem in pos:
-    # #     print(elem)
-    # # print(output)
-
-    # for i, value in enumerate(output):
-    #     print(value.tensors.shape)
-    #     print(pos[i].shape)
 
     output = detr(x)
     print(output)

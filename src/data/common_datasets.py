@@ -2,7 +2,7 @@ from torchvision import transforms
 from torchvision.datasets import MNIST, CIFAR10
 from torch.utils.data import DataLoader
 import pytorch_lightning as pl
-import torchvision
+import torch
 import os
 from torch.utils.data import Dataset
 from torchvision.datasets import VisionDataset
