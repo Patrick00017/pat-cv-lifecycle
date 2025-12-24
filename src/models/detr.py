@@ -3,6 +3,10 @@ import math
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import pytorch_lightning as pl
+from pytorch_lightning.callbacks.model_checkpoint import ModelCheckpoint
+from pytorch_lightning.loggers import CSVLogger
+from pytorch_lightning import Trainer
 from einops import rearrange, repeat
 from typing import Optional, List, Dict
 from scipy.optimize import linear_sum_assignment
@@ -39,20 +43,25 @@ class MLP(nn.Module):
         return x
 
 
-class DETR(nn.Module):
-    def __init__(self, backbone, transformer, num_classes, num_queries, aux_loss=False):
+class DETR(pl.LightningModule):
+    def __init__(self, num_classes, num_queries, aux_loss=False):
         super().__init__()
         self.num_queries = num_queries
-        self.transformer = transformer
-        self.backbone = backbone
+        self.transformer = Transformer()
+        resnet50 = Backbone("resnet50", False, True, False)
+        pos_embed = PositionEmbeddingSine(num_pos_feats=256)
+        backbone_with_pos_embed = Joiner(resnet50, pos_embed)
+        self.backbone = backbone_with_pos_embed
+        transformer = Transformer()
         hidden_dim = transformer.d_model
         self.class_embed = nn.Linear(hidden_dim, num_classes + 1)
         self.bbox_embed = MLP(hidden_dim, hidden_dim, 4, 3)
         self.query_embed = nn.Embedding(num_queries, hidden_dim)
         self.input_proj = nn.Conv2d(backbone.num_channels, hidden_dim, kernel_size=1)
         self.aux_loss = aux_loss
+        self.hungarion_matcher = HungarianMatcher()
 
-    def forward(self, samples: NestedTensor):
+    def forward(self, samples):
         if isinstance(samples, (list, torch.Tensor)):
             samples = nested_tensor_from_tensor_list(samples)
         features, pos = self.backbone(samples)
@@ -68,6 +77,26 @@ class DETR(nn.Module):
         if self.aux_loss:
             out["aux_outputs"] = self._set_aux_loss(outputs_class, outputs_coord)
         return out
+
+    def training_step(self, batch, batch_idx):
+        images, targets = batch
+        output = self.forward(images)
+        matches = self.hungarion_matcher(output, targets)
+
+    def validation_step(self, batch, batch_idx):
+        pass
+
+    def configure_optimizers(self):
+        # AdamW optimizer with specified learning rate
+        # optimizer = torch.optim.Adam([p for p in self.parameters() if p.requires_grad], lr=self.lr, weight_decay=0.0005)
+        optimizer = torch.optim.SGD(
+            [p for p in self.parameters() if p.requires_grad],
+            lr=0.001,
+            momentum=0.9,
+            weight_decay=0.0005,
+        )
+        # return {'optimizer': optimizer, 'lr_scheduler': scheduler}
+        return {"optimizer": optimizer}
 
     @torch.jit.unused
     def _set_aux_loss(self, outputs_class, outputs_coord):
@@ -143,6 +172,10 @@ if __name__ == "__main__":
     transformer = Transformer()
     detr = DETR(joiner, transformer, 10, 100)
     x = [torch.randn((3, 400, 600)), torch.randn((3, 600, 400))]
-
+    # y = []
     output = detr(x)
-    print(output)
+    pred_logits = output["pred_logits"]
+    pred_boxes = output["pred_boxes"]
+    # print(output)
+    print(f"pred_logits: {pred_logits.shape}")  # (2,100,11)
+    print(f"pred_boxes: {pred_boxes.shape}")  # (2, 100, 4)
