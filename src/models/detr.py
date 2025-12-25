@@ -15,6 +15,7 @@ from utils.box import generalized_box_iou, box_cxcywh_to_xyxy, box_xyxy_to_cxcyw
 from utils.misc import NestedTensor, nested_tensor_from_tensor_list
 from modules.position_encoding import PositionEmbeddingSine
 from modules.transformer import Transformer
+from data.common_datasets import COCODataModule
 
 
 # show tensor shape in vscode debugger
@@ -57,7 +58,7 @@ class DETR(pl.LightningModule):
         self.class_embed = nn.Linear(hidden_dim, num_classes + 1)
         self.bbox_embed = MLP(hidden_dim, hidden_dim, 4, 3)
         self.query_embed = nn.Embedding(num_queries, hidden_dim)
-        self.input_proj = nn.Conv2d(backbone.num_channels, hidden_dim, kernel_size=1)
+        self.input_proj = nn.Conv2d(self.backbone.num_channels, hidden_dim, kernel_size=1)
         self.aux_loss = aux_loss
         self.hungarion_matcher = HungarianMatcher()
 
@@ -80,11 +81,24 @@ class DETR(pl.LightningModule):
 
     def training_step(self, batch, batch_idx):
         images, targets = batch
+        # print(f"images: {images}")
         output = self.forward(images)
         matches = self.hungarion_matcher(output, targets)
+        print(matches)
+        loss = 0.0
+        self.log("train_loss", loss, batch_size=16, on_epoch=True)
+        return loss
 
     def validation_step(self, batch, batch_idx):
-        pass
+        images, targets = batch
+        # batch_size = images.shape[0]
+        # print(f"images: {images}")
+        output = self.forward(images)
+        matches = self.hungarion_matcher(output, targets)
+        print(matches)
+        loss = 0.0
+        self.log("train_loss", loss, batch_size=16, on_epoch=True)
+        return loss
 
     def configure_optimizers(self):
         # AdamW optimizer with specified learning rate
@@ -166,16 +180,28 @@ class HungarianMatcher(nn.Module):
 
 
 if __name__ == "__main__":
-    backbone = Backbone("resnet50", False, True, False)
-    pos_embed = PositionEmbeddingSine(num_pos_feats=256)
-    joiner = Joiner(backbone, pos_embed)
-    transformer = Transformer()
-    detr = DETR(joiner, transformer, 10, 100)
-    x = [torch.randn((3, 400, 600)), torch.randn((3, 600, 400))]
-    # y = []
-    output = detr(x)
-    pred_logits = output["pred_logits"]
-    pred_boxes = output["pred_boxes"]
-    # print(output)
-    print(f"pred_logits: {pred_logits.shape}")  # (2,100,11)
-    print(f"pred_boxes: {pred_boxes.shape}")  # (2, 100, 4)
+    BATCH_SIZE = 16
+    CHECKPOINT_CALLBACK = ModelCheckpoint(save_top_k=3, 
+                                        monitor="valLoss", 
+                                        every_n_epochs=1,  # Save the model at every epoch 
+                                        save_on_train_epoch_end=True  # Ensure saving happens at the end of a training epoch
+                                        )
+    LOGGER = CSVLogger("outputs", name="lightning_logs_csv")
+    device = "cuda"
+    dm = COCODataModule(batch_size=BATCH_SIZE, dataset_dir="/home/patrick/datasets/coco")
+    model = DETR(num_classes=80, num_queries=100).to(device)
+
+    trainer = Trainer(
+        logger=LOGGER,
+        accelerator='cuda',
+        devices=[0],
+        strategy="auto",
+        callbacks=[CHECKPOINT_CALLBACK],
+        max_epochs=100
+    )
+    trainer.fit(model, datamodule=dm)
+    # trainer.validate(model, datamodule=dm)
+    # pred = model(
+    # print(pred.shape)
+    print("saving model!")
+    trainer.save_checkpoint("/home/patrick/workspace/cv/pat-cv-lifecycle/checkpoints/detr-coco.ckpt")

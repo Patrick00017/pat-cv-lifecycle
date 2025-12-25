@@ -235,16 +235,74 @@ class ContinuousCocoDataset(VisionDataset):
         )
 
         if self.transform is not None:
-            img, target = self.transform(img, target)
+            img = self.transform(img)
 
         if self.target_transform is not None:
             target = self.target_transform(target)
+
+        # print(img, target)
 
         return img, target
 
     def __len__(self):
         return len(self.ids)
 
+
+class COCODataModule(pl.LightningModule):
+    def __init__(self, batch_size, dataset_dir=f"{data_root_path}coco"):
+        super().__init__()
+        self.dataset_dir = dataset_dir
+        self.batch_size = batch_size
+        self.train_transform = transforms.Compose(
+            [
+                transforms.Resize((256, 256)),
+                transforms.RandomHorizontalFlip(),
+                transforms.ToTensor(),
+                transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+            ]
+        )
+        self.test_transform = transforms.Compose(
+            [
+                transforms.ToTensor(),
+                transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+            ]
+        )
+
+    def setup(self, stage=None):
+        # print(self.img_size)
+        if stage == "fit" or stage is None:
+            self.train_dataset = ContinuousCocoDataset(
+                root=f"{self.dataset_dir}/train2017",
+                ann_files=[f"{self.dataset_dir}/annotations/instances_train2017.json"],
+                transform=self.train_transform,
+            )
+            self.val_dataset = ContinuousCocoDataset(
+                root=f"{self.dataset_dir}/val2017",
+                ann_files=[f"{self.dataset_dir}/annotations/instances_val2017.json"],
+                transform=self.train_transform,
+            )
+        if stage == "test" or stage is None:
+            self.test_dataset = ContinuousCocoDataset(
+                root=f"{self.dataset_dir}/test2017",
+                ann_files=[f"{self.dataset_dir}/annotations/image_info_test2017.json"],
+                transform=self.test_transform,
+            )
+
+    @staticmethod
+    def collate_fn(batch):
+        # img, target = batch
+        imgs = [b[0] for b in batch]
+        targets = [b[1] for b in batch]
+        return imgs, targets
+
+    def train_dataloader(self):
+        return DataLoader(self.train_dataset, batch_size=self.batch_size, shuffle=True, collate_fn=self.collate_fn)
+
+    def val_dataloader(self):
+        return DataLoader(self.val_dataset, batch_size=self.batch_size, shuffle=False, collate_fn=self.collate_fn)
+
+    def test_dataloader(self):
+        return DataLoader(self.test_dataset, batch_size=self.batch_size, shuffle=False, collate_fn=self.collate_fn)
 
 # --- Example Usage ---
 if __name__ == "__main__":
