@@ -9,6 +9,14 @@ from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning.callbacks import LearningRateMonitor
 from pprint import pprint
 import matplotlib.pyplot as plt
+from torchvision import transforms
+import socketio
+import eventlet
+import numpy as np
+from flask import Flask
+from PIL import Image
+import base64
+from io import BytesIO
 
 
 class SelfDrivingCNNModel(pl.LightningModule):
