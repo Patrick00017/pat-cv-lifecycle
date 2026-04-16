@@ -8,3 +8,4 @@ logs/*
 *.csv
 # *.txt
 src/pat_cv_lifecycle.egg-info
+*.png
