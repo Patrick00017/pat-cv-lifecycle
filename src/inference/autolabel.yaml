@@ -1,0 +1,11 @@
+type: yolov8
+name: wanqiao
+display_name: wanqiao
+model_path: CUSTUME
+iou_threshold: 0.45
+conf_threshold: 0.25
+classes:
+  - 正常
+  - 上弯
+  - 下弯
+  - S弯
