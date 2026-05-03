@@ -140,7 +140,7 @@ gguf_writer = gguf.GGUFWriter(model_path, "icls")
 print()
 print(f"Model tensors saved to {model_path}:")
 for tensor_name in model.state_dict().keys():
-    data = model.state_dict()[tensor_name].squeeze().cpu().numpy()
+    data = model.state_dict()[tensor_name].cpu().numpy()
     print(tensor_name, "\t", data.shape)
     gguf_writer.add_tensor(tensor_name, data)
 gguf_writer.write_header_to_file()

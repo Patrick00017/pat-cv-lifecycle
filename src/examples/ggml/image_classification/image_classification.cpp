@@ -86,6 +86,11 @@ bool icls_model_init_from_file(const std::string &fname, icls_model &model){
     model.backbone.conv1.padding = 3;
     model.backbone.conv1.stride = 2;
     model.backbone.conv1.activate = true;
+    model.backbone.conv1.weights = ggml_get_tensor(model.ctx, "conv1.weight");
+    model.backbone.conv1.bn_weight = ggml_get_tensor(model.ctx, "bn1.weight");
+    model.backbone.conv1.bias = ggml_get_tensor(model.ctx, "bn1.bias");
+    model.backbone.conv1.running_mean = ggml_get_tensor(model.ctx, "bn1.running_mean");
+    model.backbone.conv1.running_var = ggml_get_tensor(model.ctx, "bn1.running_var");
 
     // layer1.0
     model.backbone.layer1_0.resize(4); // 3 conv2d and 1 downsample
@@ -438,11 +443,16 @@ static ggml_tensor* apply_conv2d(ggml_context* ctx, ggml_tensor* input, const co
 {
     struct ggml_tensor* result = ggml_conv_2d(ctx, layer.weights, input, layer.stride, layer.stride, layer.padding, layer.padding, 1, 1);
     if (layer.batch_normalize) {
-        result = ggml_sub(ctx, result, ggml_repeat(ctx, layer.running_mean, result));
-        result = ggml_div(ctx, result, ggml_sqrt(ctx, ggml_repeat(ctx, layer.running_var, result)));
-        result = ggml_mul(ctx, result, ggml_repeat(ctx, layer.bn_weight, result));
+        // adjustify the shape free, no more memory will be allocated
+        ggml_tensor* running_mean = ggml_reshape_4d(ctx, layer.running_mean, 1, 1, layer.running_mean->ne[0], 1);
+        ggml_tensor* running_var = ggml_reshape_4d(ctx, layer.running_var, 1, 1, layer.running_var->ne[0], 1);
+        ggml_tensor* bn_weight = ggml_reshape_4d(ctx, layer.bn_weight, 1, 1, layer.bn_weight->ne[0], 1);
+        result = ggml_sub(ctx, result, ggml_repeat(ctx, running_mean, result));
+        result = ggml_div(ctx, result, ggml_sqrt(ctx, ggml_repeat(ctx, running_var, result)));
+        result = ggml_mul(ctx, result, ggml_repeat(ctx, bn_weight, result));
     }
-    result = ggml_add(ctx, result, ggml_repeat(ctx, layer.bias, result));
+    ggml_tensor* bias = ggml_reshape_4d(ctx, layer.bias, 1, 1, layer.bias->ne[0], 1);
+    result = ggml_add(ctx, result, ggml_repeat(ctx, bias, result));
     if (layer.activate) {
         result = ggml_relu(ctx, result);
     }

@@ -108,7 +108,7 @@ struct icls_model {
 
 struct icls_params {
     std::string model = "D:/code/forked_project/ggml/examples/image_classification/weights/icls.gguf";
-    std::string fname_inp = "input.jpg";
+    std::string fname_inp = "D:/code/forked_project/ggml/examples/image_classification/data/test/2.jpg";
     std::string fname_out = "predictions.jpg";
     int         n_threads = std::max(1U, std::thread::hardware_concurrency() / 2);
     std::string device;
