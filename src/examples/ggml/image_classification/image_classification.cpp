@@ -434,7 +434,17 @@ bool icls_model_init_from_file(const std::string &fname, icls_model &model){
             model.backbone.layer4_2[i].running_var = ggml_get_tensor(model.ctx, name);
         }
     }
-    
+
+    // projection
+    model.backbone.fc_weight = ggml_get_tensor(model.ctx, "fc.weight");
+    model.backbone.fc_bias = ggml_get_tensor(model.ctx, "fc.bias");
+    // classifier
+    model.backbone.classifer.fc1_weight = ggml_get_tensor(model.ctx, "classifier.fc1.weight");
+    model.backbone.classifer.fc1_bias = ggml_get_tensor(model.ctx, "classifier.fc1.bias");
+    model.backbone.classifer.fc2_weight = ggml_get_tensor(model.ctx, "classifier.fc2.weight");
+    model.backbone.classifer.fc2_bias = ggml_get_tensor(model.ctx, "classifier.fc2.bias");
+    model.backbone.classifer.fc3_weight = ggml_get_tensor(model.ctx, "classifier.fc3.weight");
+    model.backbone.classifer.fc3_bias = ggml_get_tensor(model.ctx, "classifier.fc3.bias");
 
     return true;
 }
@@ -518,10 +528,12 @@ static struct ggml_cgraph* build_graph(struct ggml_context* ctx_cgraph, const ic
     print_shape(41, result);
     result = apply_block(ctx_cgraph, result, model.backbone.layer4_2, false);
     print_shape(42, result);
-    result = ggml_pool_2d(ctx_cgraph, result, GGML_OP_POOL_AVG, 3, 3, 2, 2, 1, 1); // todo: adaptive avgpool
-    print_shape(50, result);
-    result = ggml_add(ctx_cgraph, ggml_mul_mat(ctx_cgraph, model.backbone.fc_weight, result), model.backbone.fc_bias);
+    result = ggml_pool_2d(ctx_cgraph, result, GGML_OP_POOL_AVG, 7, 7, 1, 1, 0, 0); // todo: adaptive avgpool
+    print_shape(50, result); // 1 * 1 * 2048 * 1
+    result = ggml_reshape_4d(ctx_cgraph, result, result->ne[2], 1, 1, 1);
     print_shape(51, result);
+    result = ggml_add(ctx_cgraph, ggml_mul_mat(ctx_cgraph, model.backbone.fc_weight, result), model.backbone.fc_bias);
+    print_shape(52, result);
 
     // start classifer
     result = ggml_relu(ctx_cgraph, ggml_add(ctx_cgraph, ggml_mul_mat(ctx_cgraph, model.backbone.classifer.fc1_weight, result), model.backbone.classifer.fc1_bias));
@@ -548,6 +560,16 @@ void inference(icls_image& image, struct ggml_cgraph * gf, const icls_model& mod
     if (ggml_backend_graph_compute(model.backend, gf) != GGML_STATUS_SUCCESS) {
         printf("%s: ggml_backend_graph_compute() failed\n", __func__);
         return;
+    }
+
+    // get output
+    struct ggml_tensor* output = ggml_graph_get_tensor(gf, "output");
+    print_shape(100, output);
+    std::vector<float> predictions;
+    predictions.resize(ggml_nbytes(output)/sizeof(float));
+    ggml_backend_tensor_get(output, predictions.data(), 0, ggml_nbytes(output));
+    for (auto i : predictions) {
+        std::cout << i << std::endl;
     }
 }
 
