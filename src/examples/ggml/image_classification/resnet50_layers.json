@@ -1,0 +1,3371 @@
+{
+  "layers": [
+    {
+      "name": "conv1",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 3,
+        "out_channels": 64,
+        "kernel_size": [
+          7,
+          7
+        ],
+        "stride": [
+          2,
+          2
+        ],
+        "padding": [
+          3,
+          3
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "bn1",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 64,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "relu",
+      "type": "ReLU",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ]
+    },
+    {
+      "name": "layer1.0.conv1",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 64,
+        "out_channels": 64,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer1.0.bn1",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 64,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer1.0.conv2",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 64,
+        "out_channels": 64,
+        "kernel_size": [
+          3,
+          3
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          1,
+          1
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer1.0.bn2",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 64,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer1.0.conv3",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 64,
+        "out_channels": 256,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer1.0.bn3",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 256,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer1.0.relu",
+      "type": "ReLU",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ]
+    },
+    {
+      "name": "layer1.0.downsample.0",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 64,
+        "out_channels": 256,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer1.0.downsample.1",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 256,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer1.1.conv1",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 256,
+        "out_channels": 64,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer1.1.bn1",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 64,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer1.1.conv2",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 64,
+        "out_channels": 64,
+        "kernel_size": [
+          3,
+          3
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          1,
+          1
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer1.1.bn2",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 64,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer1.1.conv3",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 64,
+        "out_channels": 256,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer1.1.bn3",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 256,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer1.1.relu",
+      "type": "ReLU",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ]
+    },
+    {
+      "name": "layer1.2.conv1",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 256,
+        "out_channels": 64,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer1.2.bn1",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 64,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer1.2.conv2",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 64,
+        "out_channels": 64,
+        "kernel_size": [
+          3,
+          3
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          1,
+          1
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer1.2.bn2",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 64,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer1.2.conv3",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 64,
+        "out_channels": 256,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer1.2.bn3",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 256,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer1.2.relu",
+      "type": "ReLU",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ]
+    },
+    {
+      "name": "layer2.0.conv1",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 256,
+        "out_channels": 128,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer2.0.bn1",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 128,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer2.0.conv2",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 128,
+        "out_channels": 128,
+        "kernel_size": [
+          3,
+          3
+        ],
+        "stride": [
+          2,
+          2
+        ],
+        "padding": [
+          1,
+          1
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer2.0.bn2",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 128,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer2.0.conv3",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 128,
+        "out_channels": 512,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer2.0.bn3",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 512,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer2.0.relu",
+      "type": "ReLU",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ]
+    },
+    {
+      "name": "layer2.0.downsample.0",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 256,
+        "out_channels": 512,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          2,
+          2
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer2.0.downsample.1",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 512,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer2.1.conv1",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 512,
+        "out_channels": 128,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer2.1.bn1",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 128,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer2.1.conv2",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 128,
+        "out_channels": 128,
+        "kernel_size": [
+          3,
+          3
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          1,
+          1
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer2.1.bn2",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 128,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer2.1.conv3",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 128,
+        "out_channels": 512,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer2.1.bn3",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 512,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer2.1.relu",
+      "type": "ReLU",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ]
+    },
+    {
+      "name": "layer2.2.conv1",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 512,
+        "out_channels": 128,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer2.2.bn1",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 128,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer2.2.conv2",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 128,
+        "out_channels": 128,
+        "kernel_size": [
+          3,
+          3
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          1,
+          1
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer2.2.bn2",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 128,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer2.2.conv3",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 128,
+        "out_channels": 512,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer2.2.bn3",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 512,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer2.2.relu",
+      "type": "ReLU",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ]
+    },
+    {
+      "name": "layer2.3.conv1",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 512,
+        "out_channels": 128,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer2.3.bn1",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 128,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer2.3.conv2",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 128,
+        "out_channels": 128,
+        "kernel_size": [
+          3,
+          3
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          1,
+          1
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer2.3.bn2",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 128,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer2.3.conv3",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 128,
+        "out_channels": 512,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer2.3.bn3",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 512,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer2.3.relu",
+      "type": "ReLU",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ]
+    },
+    {
+      "name": "layer3.0.conv1",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 512,
+        "out_channels": 256,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer3.0.bn1",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 256,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer3.0.conv2",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 256,
+        "out_channels": 256,
+        "kernel_size": [
+          3,
+          3
+        ],
+        "stride": [
+          2,
+          2
+        ],
+        "padding": [
+          1,
+          1
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer3.0.bn2",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 256,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer3.0.conv3",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 256,
+        "out_channels": 1024,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer3.0.bn3",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 1024,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer3.0.relu",
+      "type": "ReLU",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ]
+    },
+    {
+      "name": "layer3.0.downsample.0",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 512,
+        "out_channels": 1024,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          2,
+          2
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer3.0.downsample.1",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 1024,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer3.1.conv1",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 1024,
+        "out_channels": 256,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer3.1.bn1",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 256,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer3.1.conv2",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 256,
+        "out_channels": 256,
+        "kernel_size": [
+          3,
+          3
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          1,
+          1
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer3.1.bn2",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 256,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer3.1.conv3",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 256,
+        "out_channels": 1024,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer3.1.bn3",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 1024,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer3.1.relu",
+      "type": "ReLU",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ]
+    },
+    {
+      "name": "layer3.2.conv1",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 1024,
+        "out_channels": 256,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer3.2.bn1",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 256,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer3.2.conv2",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 256,
+        "out_channels": 256,
+        "kernel_size": [
+          3,
+          3
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          1,
+          1
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer3.2.bn2",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 256,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer3.2.conv3",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 256,
+        "out_channels": 1024,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer3.2.bn3",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 1024,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer3.2.relu",
+      "type": "ReLU",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ]
+    },
+    {
+      "name": "layer3.3.conv1",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 1024,
+        "out_channels": 256,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer3.3.bn1",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 256,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer3.3.conv2",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 256,
+        "out_channels": 256,
+        "kernel_size": [
+          3,
+          3
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          1,
+          1
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer3.3.bn2",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 256,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer3.3.conv3",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 256,
+        "out_channels": 1024,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer3.3.bn3",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 1024,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer3.3.relu",
+      "type": "ReLU",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ]
+    },
+    {
+      "name": "layer3.4.conv1",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 1024,
+        "out_channels": 256,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer3.4.bn1",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 256,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer3.4.conv2",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 256,
+        "out_channels": 256,
+        "kernel_size": [
+          3,
+          3
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          1,
+          1
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer3.4.bn2",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 256,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer3.4.conv3",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 256,
+        "out_channels": 1024,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer3.4.bn3",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 1024,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer3.4.relu",
+      "type": "ReLU",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ]
+    },
+    {
+      "name": "layer3.5.conv1",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 1024,
+        "out_channels": 256,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer3.5.bn1",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 256,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer3.5.conv2",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 256,
+        "out_channels": 256,
+        "kernel_size": [
+          3,
+          3
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          1,
+          1
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer3.5.bn2",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 256,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer3.5.conv3",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 256,
+        "out_channels": 1024,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer3.5.bn3",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 1024,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer3.5.relu",
+      "type": "ReLU",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ]
+    },
+    {
+      "name": "layer4.0.conv1",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 1024,
+        "out_channels": 512,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer4.0.bn1",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 512,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer4.0.conv2",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 512,
+        "out_channels": 512,
+        "kernel_size": [
+          3,
+          3
+        ],
+        "stride": [
+          2,
+          2
+        ],
+        "padding": [
+          1,
+          1
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer4.0.bn2",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 512,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer4.0.conv3",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 512,
+        "out_channels": 2048,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer4.0.bn3",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 2048,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer4.0.relu",
+      "type": "ReLU",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ]
+    },
+    {
+      "name": "layer4.0.downsample.0",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 1024,
+        "out_channels": 2048,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          2,
+          2
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer4.0.downsample.1",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 2048,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer4.1.conv1",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 2048,
+        "out_channels": 512,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer4.1.bn1",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 512,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer4.1.conv2",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 512,
+        "out_channels": 512,
+        "kernel_size": [
+          3,
+          3
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          1,
+          1
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer4.1.bn2",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 512,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer4.1.conv3",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 512,
+        "out_channels": 2048,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer4.1.bn3",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 2048,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer4.1.relu",
+      "type": "ReLU",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ]
+    },
+    {
+      "name": "layer4.2.conv1",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 2048,
+        "out_channels": 512,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer4.2.bn1",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 512,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer4.2.conv2",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 512,
+        "out_channels": 512,
+        "kernel_size": [
+          3,
+          3
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          1,
+          1
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer4.2.bn2",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 512,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer4.2.conv3",
+      "type": "Conv2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_channels": 512,
+        "out_channels": 2048,
+        "kernel_size": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "dilation": [
+          1,
+          1
+        ],
+        "groups": 1
+      }
+    },
+    {
+      "name": "layer4.2.bn3",
+      "type": "BatchNorm2d",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "num_features": 2048,
+        "eps": 1e-05,
+        "momentum": 0.1
+      }
+    },
+    {
+      "name": "layer4.2.relu",
+      "type": "ReLU",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ]
+    },
+    {
+      "name": "fc",
+      "type": "Linear",
+      "inputs": [
+        {
+          "name": "input",
+          "shape": "inferred"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": "inferred"
+        }
+      ],
+      "attributes": {
+        "in_features": 2048,
+        "out_features": 1000
+      }
+    }
+  ],
+  "connections": []
+}

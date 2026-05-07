@@ -1,0 +1,4613 @@
+{
+  "metadata": {
+    "source": "compute_graph.txt",
+    "model": "resnet50",
+    "description": "FX compute graph from torch.compile"
+  },
+  "nodes": [
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_conv1_parameters_weight_",
+      "target": "G_model_modules_conv1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "l_x_",
+      "target": "L_x_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_bn1_buffers_num_batches_tracked_",
+      "target": "G_model_modules_bn1_buffers_num_batches_tracked_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_bn1_buffers_running_mean_",
+      "target": "G_model_modules_bn1_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_bn1_buffers_running_var_",
+      "target": "G_model_modules_bn1_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_bn1_parameters_weight_",
+      "target": "G_model_modules_bn1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_bn1_parameters_bias_",
+      "target": "G_model_modules_bn1_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_0_modules_conv1_parameters_weight_",
+      "target": "G_model_modules_layer1_modules_0_modules_conv1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_0_modules_bn1_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer1_modules_0_modules_bn1_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_0_modules_bn1_buffers_running_mean_",
+      "target": "G_model_modules_layer1_modules_0_modules_bn1_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_0_modules_bn1_buffers_running_var_",
+      "target": "G_model_modules_layer1_modules_0_modules_bn1_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_0_modules_bn1_parameters_weight_",
+      "target": "G_model_modules_layer1_modules_0_modules_bn1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_0_modules_bn1_parameters_bias_",
+      "target": "G_model_modules_layer1_modules_0_modules_bn1_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_0_modules_conv2_parameters_weight_",
+      "target": "G_model_modules_layer1_modules_0_modules_conv2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_0_modules_bn2_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer1_modules_0_modules_bn2_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_0_modules_bn2_buffers_running_mean_",
+      "target": "G_model_modules_layer1_modules_0_modules_bn2_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_0_modules_bn2_buffers_running_var_",
+      "target": "G_model_modules_layer1_modules_0_modules_bn2_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_0_modules_bn2_parameters_weight_",
+      "target": "G_model_modules_layer1_modules_0_modules_bn2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_0_modules_bn2_parameters_bias_",
+      "target": "G_model_modules_layer1_modules_0_modules_bn2_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_0_modules_conv3_parameters_weight_",
+      "target": "G_model_modules_layer1_modules_0_modules_conv3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_0_modules_bn3_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer1_modules_0_modules_bn3_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_0_modules_bn3_buffers_running_mean_",
+      "target": "G_model_modules_layer1_modules_0_modules_bn3_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_0_modules_bn3_buffers_running_var_",
+      "target": "G_model_modules_layer1_modules_0_modules_bn3_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_0_modules_bn3_parameters_weight_",
+      "target": "G_model_modules_layer1_modules_0_modules_bn3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_0_modules_bn3_parameters_bias_",
+      "target": "G_model_modules_layer1_modules_0_modules_bn3_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_0_modules_downsample_modules_0_parameters_weight",
+      "target": "G_model_modules_layer1_modules_0_modules_downsample_modules_0_param",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_0_modules_downsample_modules_1_buffers_num_batch",
+      "target": "s_tracked_  G_model_modules_layer1_modules_0_modules_downsample_modules_1_buffe",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_0_modules_downsample_modules_1_buffers_running_m",
+      "target": "an_         G_model_modules_layer1_modules_0_modules_downsample_modules_1_buffe",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_0_modules_downsample_modules_1_buffers_running_v",
+      "target": "r_          G_model_modules_layer1_modules_0_modules_downsample_modules_1_buffe",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_0_modules_downsample_modules_1_parameters_weight",
+      "target": "G_model_modules_layer1_modules_0_modules_downsample_modules_1_param",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_0_modules_downsample_modules_1_parameters_bias_",
+      "target": "G_model_modules_layer1_modules_0_modules_downsample_modules_1_param",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_1_modules_conv1_parameters_weight_",
+      "target": "G_model_modules_layer1_modules_1_modules_conv1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_1_modules_bn1_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer1_modules_1_modules_bn1_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_1_modules_bn1_buffers_running_mean_",
+      "target": "G_model_modules_layer1_modules_1_modules_bn1_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_1_modules_bn1_buffers_running_var_",
+      "target": "G_model_modules_layer1_modules_1_modules_bn1_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_1_modules_bn1_parameters_weight_",
+      "target": "G_model_modules_layer1_modules_1_modules_bn1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_1_modules_bn1_parameters_bias_",
+      "target": "G_model_modules_layer1_modules_1_modules_bn1_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_1_modules_conv2_parameters_weight_",
+      "target": "G_model_modules_layer1_modules_1_modules_conv2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_1_modules_bn2_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer1_modules_1_modules_bn2_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_1_modules_bn2_buffers_running_mean_",
+      "target": "G_model_modules_layer1_modules_1_modules_bn2_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_1_modules_bn2_buffers_running_var_",
+      "target": "G_model_modules_layer1_modules_1_modules_bn2_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_1_modules_bn2_parameters_weight_",
+      "target": "G_model_modules_layer1_modules_1_modules_bn2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_1_modules_bn2_parameters_bias_",
+      "target": "G_model_modules_layer1_modules_1_modules_bn2_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_1_modules_conv3_parameters_weight_",
+      "target": "G_model_modules_layer1_modules_1_modules_conv3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_1_modules_bn3_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer1_modules_1_modules_bn3_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_1_modules_bn3_buffers_running_mean_",
+      "target": "G_model_modules_layer1_modules_1_modules_bn3_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_1_modules_bn3_buffers_running_var_",
+      "target": "G_model_modules_layer1_modules_1_modules_bn3_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_1_modules_bn3_parameters_weight_",
+      "target": "G_model_modules_layer1_modules_1_modules_bn3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_1_modules_bn3_parameters_bias_",
+      "target": "G_model_modules_layer1_modules_1_modules_bn3_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_2_modules_conv1_parameters_weight_",
+      "target": "G_model_modules_layer1_modules_2_modules_conv1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_2_modules_bn1_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer1_modules_2_modules_bn1_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_2_modules_bn1_buffers_running_mean_",
+      "target": "G_model_modules_layer1_modules_2_modules_bn1_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_2_modules_bn1_buffers_running_var_",
+      "target": "G_model_modules_layer1_modules_2_modules_bn1_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_2_modules_bn1_parameters_weight_",
+      "target": "G_model_modules_layer1_modules_2_modules_bn1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_2_modules_bn1_parameters_bias_",
+      "target": "G_model_modules_layer1_modules_2_modules_bn1_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_2_modules_conv2_parameters_weight_",
+      "target": "G_model_modules_layer1_modules_2_modules_conv2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_2_modules_bn2_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer1_modules_2_modules_bn2_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_2_modules_bn2_buffers_running_mean_",
+      "target": "G_model_modules_layer1_modules_2_modules_bn2_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_2_modules_bn2_buffers_running_var_",
+      "target": "G_model_modules_layer1_modules_2_modules_bn2_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_2_modules_bn2_parameters_weight_",
+      "target": "G_model_modules_layer1_modules_2_modules_bn2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_2_modules_bn2_parameters_bias_",
+      "target": "G_model_modules_layer1_modules_2_modules_bn2_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_2_modules_conv3_parameters_weight_",
+      "target": "G_model_modules_layer1_modules_2_modules_conv3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_2_modules_bn3_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer1_modules_2_modules_bn3_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_2_modules_bn3_buffers_running_mean_",
+      "target": "G_model_modules_layer1_modules_2_modules_bn3_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_2_modules_bn3_buffers_running_var_",
+      "target": "G_model_modules_layer1_modules_2_modules_bn3_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_2_modules_bn3_parameters_weight_",
+      "target": "G_model_modules_layer1_modules_2_modules_bn3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer1_modules_2_modules_bn3_parameters_bias_",
+      "target": "G_model_modules_layer1_modules_2_modules_bn3_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_0_modules_conv1_parameters_weight_",
+      "target": "G_model_modules_layer2_modules_0_modules_conv1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_0_modules_bn1_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer2_modules_0_modules_bn1_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_0_modules_bn1_buffers_running_mean_",
+      "target": "G_model_modules_layer2_modules_0_modules_bn1_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_0_modules_bn1_buffers_running_var_",
+      "target": "G_model_modules_layer2_modules_0_modules_bn1_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_0_modules_bn1_parameters_weight_",
+      "target": "G_model_modules_layer2_modules_0_modules_bn1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_0_modules_bn1_parameters_bias_",
+      "target": "G_model_modules_layer2_modules_0_modules_bn1_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_0_modules_conv2_parameters_weight_",
+      "target": "G_model_modules_layer2_modules_0_modules_conv2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_0_modules_bn2_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer2_modules_0_modules_bn2_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_0_modules_bn2_buffers_running_mean_",
+      "target": "G_model_modules_layer2_modules_0_modules_bn2_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_0_modules_bn2_buffers_running_var_",
+      "target": "G_model_modules_layer2_modules_0_modules_bn2_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_0_modules_bn2_parameters_weight_",
+      "target": "G_model_modules_layer2_modules_0_modules_bn2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_0_modules_bn2_parameters_bias_",
+      "target": "G_model_modules_layer2_modules_0_modules_bn2_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_0_modules_conv3_parameters_weight_",
+      "target": "G_model_modules_layer2_modules_0_modules_conv3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_0_modules_bn3_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer2_modules_0_modules_bn3_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_0_modules_bn3_buffers_running_mean_",
+      "target": "G_model_modules_layer2_modules_0_modules_bn3_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_0_modules_bn3_buffers_running_var_",
+      "target": "G_model_modules_layer2_modules_0_modules_bn3_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_0_modules_bn3_parameters_weight_",
+      "target": "G_model_modules_layer2_modules_0_modules_bn3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_0_modules_bn3_parameters_bias_",
+      "target": "G_model_modules_layer2_modules_0_modules_bn3_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_0_modules_downsample_modules_0_parameters_weight",
+      "target": "G_model_modules_layer2_modules_0_modules_downsample_modules_0_param",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_0_modules_downsample_modules_1_buffers_num_batch",
+      "target": "s_tracked_  G_model_modules_layer2_modules_0_modules_downsample_modules_1_buffe",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_0_modules_downsample_modules_1_buffers_running_m",
+      "target": "an_         G_model_modules_layer2_modules_0_modules_downsample_modules_1_buffe",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_0_modules_downsample_modules_1_buffers_running_v",
+      "target": "r_          G_model_modules_layer2_modules_0_modules_downsample_modules_1_buffe",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_0_modules_downsample_modules_1_parameters_weight",
+      "target": "G_model_modules_layer2_modules_0_modules_downsample_modules_1_param",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_0_modules_downsample_modules_1_parameters_bias_",
+      "target": "G_model_modules_layer2_modules_0_modules_downsample_modules_1_param",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_1_modules_conv1_parameters_weight_",
+      "target": "G_model_modules_layer2_modules_1_modules_conv1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_1_modules_bn1_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer2_modules_1_modules_bn1_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_1_modules_bn1_buffers_running_mean_",
+      "target": "G_model_modules_layer2_modules_1_modules_bn1_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_1_modules_bn1_buffers_running_var_",
+      "target": "G_model_modules_layer2_modules_1_modules_bn1_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_1_modules_bn1_parameters_weight_",
+      "target": "G_model_modules_layer2_modules_1_modules_bn1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_1_modules_bn1_parameters_bias_",
+      "target": "G_model_modules_layer2_modules_1_modules_bn1_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_1_modules_conv2_parameters_weight_",
+      "target": "G_model_modules_layer2_modules_1_modules_conv2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_1_modules_bn2_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer2_modules_1_modules_bn2_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_1_modules_bn2_buffers_running_mean_",
+      "target": "G_model_modules_layer2_modules_1_modules_bn2_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_1_modules_bn2_buffers_running_var_",
+      "target": "G_model_modules_layer2_modules_1_modules_bn2_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_1_modules_bn2_parameters_weight_",
+      "target": "G_model_modules_layer2_modules_1_modules_bn2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_1_modules_bn2_parameters_bias_",
+      "target": "G_model_modules_layer2_modules_1_modules_bn2_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_1_modules_conv3_parameters_weight_",
+      "target": "G_model_modules_layer2_modules_1_modules_conv3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_1_modules_bn3_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer2_modules_1_modules_bn3_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_1_modules_bn3_buffers_running_mean_",
+      "target": "G_model_modules_layer2_modules_1_modules_bn3_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_1_modules_bn3_buffers_running_var_",
+      "target": "G_model_modules_layer2_modules_1_modules_bn3_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_1_modules_bn3_parameters_weight_",
+      "target": "G_model_modules_layer2_modules_1_modules_bn3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_1_modules_bn3_parameters_bias_",
+      "target": "G_model_modules_layer2_modules_1_modules_bn3_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_2_modules_conv1_parameters_weight_",
+      "target": "G_model_modules_layer2_modules_2_modules_conv1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_2_modules_bn1_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer2_modules_2_modules_bn1_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_2_modules_bn1_buffers_running_mean_",
+      "target": "G_model_modules_layer2_modules_2_modules_bn1_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_2_modules_bn1_buffers_running_var_",
+      "target": "G_model_modules_layer2_modules_2_modules_bn1_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_2_modules_bn1_parameters_weight_",
+      "target": "G_model_modules_layer2_modules_2_modules_bn1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_2_modules_bn1_parameters_bias_",
+      "target": "G_model_modules_layer2_modules_2_modules_bn1_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_2_modules_conv2_parameters_weight_",
+      "target": "G_model_modules_layer2_modules_2_modules_conv2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_2_modules_bn2_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer2_modules_2_modules_bn2_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_2_modules_bn2_buffers_running_mean_",
+      "target": "G_model_modules_layer2_modules_2_modules_bn2_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_2_modules_bn2_buffers_running_var_",
+      "target": "G_model_modules_layer2_modules_2_modules_bn2_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_2_modules_bn2_parameters_weight_",
+      "target": "G_model_modules_layer2_modules_2_modules_bn2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_2_modules_bn2_parameters_bias_",
+      "target": "G_model_modules_layer2_modules_2_modules_bn2_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_2_modules_conv3_parameters_weight_",
+      "target": "G_model_modules_layer2_modules_2_modules_conv3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_2_modules_bn3_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer2_modules_2_modules_bn3_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_2_modules_bn3_buffers_running_mean_",
+      "target": "G_model_modules_layer2_modules_2_modules_bn3_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_2_modules_bn3_buffers_running_var_",
+      "target": "G_model_modules_layer2_modules_2_modules_bn3_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_2_modules_bn3_parameters_weight_",
+      "target": "G_model_modules_layer2_modules_2_modules_bn3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_2_modules_bn3_parameters_bias_",
+      "target": "G_model_modules_layer2_modules_2_modules_bn3_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_3_modules_conv1_parameters_weight_",
+      "target": "G_model_modules_layer2_modules_3_modules_conv1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_3_modules_bn1_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer2_modules_3_modules_bn1_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_3_modules_bn1_buffers_running_mean_",
+      "target": "G_model_modules_layer2_modules_3_modules_bn1_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_3_modules_bn1_buffers_running_var_",
+      "target": "G_model_modules_layer2_modules_3_modules_bn1_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_3_modules_bn1_parameters_weight_",
+      "target": "G_model_modules_layer2_modules_3_modules_bn1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_3_modules_bn1_parameters_bias_",
+      "target": "G_model_modules_layer2_modules_3_modules_bn1_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_3_modules_conv2_parameters_weight_",
+      "target": "G_model_modules_layer2_modules_3_modules_conv2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_3_modules_bn2_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer2_modules_3_modules_bn2_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_3_modules_bn2_buffers_running_mean_",
+      "target": "G_model_modules_layer2_modules_3_modules_bn2_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_3_modules_bn2_buffers_running_var_",
+      "target": "G_model_modules_layer2_modules_3_modules_bn2_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_3_modules_bn2_parameters_weight_",
+      "target": "G_model_modules_layer2_modules_3_modules_bn2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_3_modules_bn2_parameters_bias_",
+      "target": "G_model_modules_layer2_modules_3_modules_bn2_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_3_modules_conv3_parameters_weight_",
+      "target": "G_model_modules_layer2_modules_3_modules_conv3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_3_modules_bn3_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer2_modules_3_modules_bn3_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_3_modules_bn3_buffers_running_mean_",
+      "target": "G_model_modules_layer2_modules_3_modules_bn3_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_3_modules_bn3_buffers_running_var_",
+      "target": "G_model_modules_layer2_modules_3_modules_bn3_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_3_modules_bn3_parameters_weight_",
+      "target": "G_model_modules_layer2_modules_3_modules_bn3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer2_modules_3_modules_bn3_parameters_bias_",
+      "target": "G_model_modules_layer2_modules_3_modules_bn3_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_0_modules_conv1_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_0_modules_conv1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_0_modules_bn1_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer3_modules_0_modules_bn1_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_0_modules_bn1_buffers_running_mean_",
+      "target": "G_model_modules_layer3_modules_0_modules_bn1_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_0_modules_bn1_buffers_running_var_",
+      "target": "G_model_modules_layer3_modules_0_modules_bn1_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_0_modules_bn1_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_0_modules_bn1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_0_modules_bn1_parameters_bias_",
+      "target": "G_model_modules_layer3_modules_0_modules_bn1_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_0_modules_conv2_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_0_modules_conv2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_0_modules_bn2_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer3_modules_0_modules_bn2_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_0_modules_bn2_buffers_running_mean_",
+      "target": "G_model_modules_layer3_modules_0_modules_bn2_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_0_modules_bn2_buffers_running_var_",
+      "target": "G_model_modules_layer3_modules_0_modules_bn2_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_0_modules_bn2_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_0_modules_bn2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_0_modules_bn2_parameters_bias_",
+      "target": "G_model_modules_layer3_modules_0_modules_bn2_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_0_modules_conv3_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_0_modules_conv3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_0_modules_bn3_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer3_modules_0_modules_bn3_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_0_modules_bn3_buffers_running_mean_",
+      "target": "G_model_modules_layer3_modules_0_modules_bn3_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_0_modules_bn3_buffers_running_var_",
+      "target": "G_model_modules_layer3_modules_0_modules_bn3_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_0_modules_bn3_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_0_modules_bn3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_0_modules_bn3_parameters_bias_",
+      "target": "G_model_modules_layer3_modules_0_modules_bn3_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_0_modules_downsample_modules_0_parameters_weight",
+      "target": "G_model_modules_layer3_modules_0_modules_downsample_modules_0_param",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_0_modules_downsample_modules_1_buffers_num_batch",
+      "target": "s_tracked_  G_model_modules_layer3_modules_0_modules_downsample_modules_1_buffe",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_0_modules_downsample_modules_1_buffers_running_m",
+      "target": "an_         G_model_modules_layer3_modules_0_modules_downsample_modules_1_buffe",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_0_modules_downsample_modules_1_buffers_running_v",
+      "target": "r_          G_model_modules_layer3_modules_0_modules_downsample_modules_1_buffe",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_0_modules_downsample_modules_1_parameters_weight",
+      "target": "G_model_modules_layer3_modules_0_modules_downsample_modules_1_param",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_0_modules_downsample_modules_1_parameters_bias_",
+      "target": "G_model_modules_layer3_modules_0_modules_downsample_modules_1_param",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_1_modules_conv1_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_1_modules_conv1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_1_modules_bn1_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer3_modules_1_modules_bn1_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_1_modules_bn1_buffers_running_mean_",
+      "target": "G_model_modules_layer3_modules_1_modules_bn1_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_1_modules_bn1_buffers_running_var_",
+      "target": "G_model_modules_layer3_modules_1_modules_bn1_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_1_modules_bn1_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_1_modules_bn1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_1_modules_bn1_parameters_bias_",
+      "target": "G_model_modules_layer3_modules_1_modules_bn1_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_1_modules_conv2_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_1_modules_conv2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_1_modules_bn2_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer3_modules_1_modules_bn2_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_1_modules_bn2_buffers_running_mean_",
+      "target": "G_model_modules_layer3_modules_1_modules_bn2_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_1_modules_bn2_buffers_running_var_",
+      "target": "G_model_modules_layer3_modules_1_modules_bn2_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_1_modules_bn2_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_1_modules_bn2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_1_modules_bn2_parameters_bias_",
+      "target": "G_model_modules_layer3_modules_1_modules_bn2_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_1_modules_conv3_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_1_modules_conv3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_1_modules_bn3_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer3_modules_1_modules_bn3_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_1_modules_bn3_buffers_running_mean_",
+      "target": "G_model_modules_layer3_modules_1_modules_bn3_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_1_modules_bn3_buffers_running_var_",
+      "target": "G_model_modules_layer3_modules_1_modules_bn3_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_1_modules_bn3_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_1_modules_bn3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_1_modules_bn3_parameters_bias_",
+      "target": "G_model_modules_layer3_modules_1_modules_bn3_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_2_modules_conv1_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_2_modules_conv1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_2_modules_bn1_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer3_modules_2_modules_bn1_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_2_modules_bn1_buffers_running_mean_",
+      "target": "G_model_modules_layer3_modules_2_modules_bn1_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_2_modules_bn1_buffers_running_var_",
+      "target": "G_model_modules_layer3_modules_2_modules_bn1_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_2_modules_bn1_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_2_modules_bn1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_2_modules_bn1_parameters_bias_",
+      "target": "G_model_modules_layer3_modules_2_modules_bn1_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_2_modules_conv2_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_2_modules_conv2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_2_modules_bn2_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer3_modules_2_modules_bn2_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_2_modules_bn2_buffers_running_mean_",
+      "target": "G_model_modules_layer3_modules_2_modules_bn2_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_2_modules_bn2_buffers_running_var_",
+      "target": "G_model_modules_layer3_modules_2_modules_bn2_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_2_modules_bn2_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_2_modules_bn2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_2_modules_bn2_parameters_bias_",
+      "target": "G_model_modules_layer3_modules_2_modules_bn2_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_2_modules_conv3_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_2_modules_conv3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_2_modules_bn3_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer3_modules_2_modules_bn3_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_2_modules_bn3_buffers_running_mean_",
+      "target": "G_model_modules_layer3_modules_2_modules_bn3_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_2_modules_bn3_buffers_running_var_",
+      "target": "G_model_modules_layer3_modules_2_modules_bn3_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_2_modules_bn3_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_2_modules_bn3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_2_modules_bn3_parameters_bias_",
+      "target": "G_model_modules_layer3_modules_2_modules_bn3_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_3_modules_conv1_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_3_modules_conv1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_3_modules_bn1_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer3_modules_3_modules_bn1_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_3_modules_bn1_buffers_running_mean_",
+      "target": "G_model_modules_layer3_modules_3_modules_bn1_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_3_modules_bn1_buffers_running_var_",
+      "target": "G_model_modules_layer3_modules_3_modules_bn1_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_3_modules_bn1_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_3_modules_bn1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_3_modules_bn1_parameters_bias_",
+      "target": "G_model_modules_layer3_modules_3_modules_bn1_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_3_modules_conv2_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_3_modules_conv2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_3_modules_bn2_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer3_modules_3_modules_bn2_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_3_modules_bn2_buffers_running_mean_",
+      "target": "G_model_modules_layer3_modules_3_modules_bn2_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_3_modules_bn2_buffers_running_var_",
+      "target": "G_model_modules_layer3_modules_3_modules_bn2_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_3_modules_bn2_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_3_modules_bn2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_3_modules_bn2_parameters_bias_",
+      "target": "G_model_modules_layer3_modules_3_modules_bn2_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_3_modules_conv3_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_3_modules_conv3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_3_modules_bn3_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer3_modules_3_modules_bn3_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_3_modules_bn3_buffers_running_mean_",
+      "target": "G_model_modules_layer3_modules_3_modules_bn3_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_3_modules_bn3_buffers_running_var_",
+      "target": "G_model_modules_layer3_modules_3_modules_bn3_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_3_modules_bn3_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_3_modules_bn3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_3_modules_bn3_parameters_bias_",
+      "target": "G_model_modules_layer3_modules_3_modules_bn3_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_4_modules_conv1_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_4_modules_conv1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_4_modules_bn1_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer3_modules_4_modules_bn1_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_4_modules_bn1_buffers_running_mean_",
+      "target": "G_model_modules_layer3_modules_4_modules_bn1_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_4_modules_bn1_buffers_running_var_",
+      "target": "G_model_modules_layer3_modules_4_modules_bn1_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_4_modules_bn1_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_4_modules_bn1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_4_modules_bn1_parameters_bias_",
+      "target": "G_model_modules_layer3_modules_4_modules_bn1_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_4_modules_conv2_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_4_modules_conv2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_4_modules_bn2_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer3_modules_4_modules_bn2_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_4_modules_bn2_buffers_running_mean_",
+      "target": "G_model_modules_layer3_modules_4_modules_bn2_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_4_modules_bn2_buffers_running_var_",
+      "target": "G_model_modules_layer3_modules_4_modules_bn2_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_4_modules_bn2_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_4_modules_bn2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_4_modules_bn2_parameters_bias_",
+      "target": "G_model_modules_layer3_modules_4_modules_bn2_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_4_modules_conv3_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_4_modules_conv3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_4_modules_bn3_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer3_modules_4_modules_bn3_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_4_modules_bn3_buffers_running_mean_",
+      "target": "G_model_modules_layer3_modules_4_modules_bn3_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_4_modules_bn3_buffers_running_var_",
+      "target": "G_model_modules_layer3_modules_4_modules_bn3_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_4_modules_bn3_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_4_modules_bn3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_4_modules_bn3_parameters_bias_",
+      "target": "G_model_modules_layer3_modules_4_modules_bn3_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_5_modules_conv1_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_5_modules_conv1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_5_modules_bn1_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer3_modules_5_modules_bn1_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_5_modules_bn1_buffers_running_mean_",
+      "target": "G_model_modules_layer3_modules_5_modules_bn1_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_5_modules_bn1_buffers_running_var_",
+      "target": "G_model_modules_layer3_modules_5_modules_bn1_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_5_modules_bn1_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_5_modules_bn1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_5_modules_bn1_parameters_bias_",
+      "target": "G_model_modules_layer3_modules_5_modules_bn1_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_5_modules_conv2_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_5_modules_conv2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_5_modules_bn2_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer3_modules_5_modules_bn2_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_5_modules_bn2_buffers_running_mean_",
+      "target": "G_model_modules_layer3_modules_5_modules_bn2_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_5_modules_bn2_buffers_running_var_",
+      "target": "G_model_modules_layer3_modules_5_modules_bn2_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_5_modules_bn2_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_5_modules_bn2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_5_modules_bn2_parameters_bias_",
+      "target": "G_model_modules_layer3_modules_5_modules_bn2_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_5_modules_conv3_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_5_modules_conv3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_5_modules_bn3_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer3_modules_5_modules_bn3_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_5_modules_bn3_buffers_running_mean_",
+      "target": "G_model_modules_layer3_modules_5_modules_bn3_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_5_modules_bn3_buffers_running_var_",
+      "target": "G_model_modules_layer3_modules_5_modules_bn3_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_5_modules_bn3_parameters_weight_",
+      "target": "G_model_modules_layer3_modules_5_modules_bn3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer3_modules_5_modules_bn3_parameters_bias_",
+      "target": "G_model_modules_layer3_modules_5_modules_bn3_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_0_modules_conv1_parameters_weight_",
+      "target": "G_model_modules_layer4_modules_0_modules_conv1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_0_modules_bn1_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer4_modules_0_modules_bn1_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_0_modules_bn1_buffers_running_mean_",
+      "target": "G_model_modules_layer4_modules_0_modules_bn1_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_0_modules_bn1_buffers_running_var_",
+      "target": "G_model_modules_layer4_modules_0_modules_bn1_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_0_modules_bn1_parameters_weight_",
+      "target": "G_model_modules_layer4_modules_0_modules_bn1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_0_modules_bn1_parameters_bias_",
+      "target": "G_model_modules_layer4_modules_0_modules_bn1_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_0_modules_conv2_parameters_weight_",
+      "target": "G_model_modules_layer4_modules_0_modules_conv2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_0_modules_bn2_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer4_modules_0_modules_bn2_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_0_modules_bn2_buffers_running_mean_",
+      "target": "G_model_modules_layer4_modules_0_modules_bn2_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_0_modules_bn2_buffers_running_var_",
+      "target": "G_model_modules_layer4_modules_0_modules_bn2_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_0_modules_bn2_parameters_weight_",
+      "target": "G_model_modules_layer4_modules_0_modules_bn2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_0_modules_bn2_parameters_bias_",
+      "target": "G_model_modules_layer4_modules_0_modules_bn2_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_0_modules_conv3_parameters_weight_",
+      "target": "G_model_modules_layer4_modules_0_modules_conv3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_0_modules_bn3_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer4_modules_0_modules_bn3_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_0_modules_bn3_buffers_running_mean_",
+      "target": "G_model_modules_layer4_modules_0_modules_bn3_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_0_modules_bn3_buffers_running_var_",
+      "target": "G_model_modules_layer4_modules_0_modules_bn3_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_0_modules_bn3_parameters_weight_",
+      "target": "G_model_modules_layer4_modules_0_modules_bn3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_0_modules_bn3_parameters_bias_",
+      "target": "G_model_modules_layer4_modules_0_modules_bn3_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_0_modules_downsample_modules_0_parameters_weight",
+      "target": "G_model_modules_layer4_modules_0_modules_downsample_modules_0_param",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_0_modules_downsample_modules_1_buffers_num_batch",
+      "target": "s_tracked_  G_model_modules_layer4_modules_0_modules_downsample_modules_1_buffe",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_0_modules_downsample_modules_1_buffers_running_m",
+      "target": "an_         G_model_modules_layer4_modules_0_modules_downsample_modules_1_buffe",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_0_modules_downsample_modules_1_buffers_running_v",
+      "target": "r_          G_model_modules_layer4_modules_0_modules_downsample_modules_1_buffe",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_0_modules_downsample_modules_1_parameters_weight",
+      "target": "G_model_modules_layer4_modules_0_modules_downsample_modules_1_param",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_0_modules_downsample_modules_1_parameters_bias_",
+      "target": "G_model_modules_layer4_modules_0_modules_downsample_modules_1_param",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_1_modules_conv1_parameters_weight_",
+      "target": "G_model_modules_layer4_modules_1_modules_conv1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_1_modules_bn1_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer4_modules_1_modules_bn1_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_1_modules_bn1_buffers_running_mean_",
+      "target": "G_model_modules_layer4_modules_1_modules_bn1_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_1_modules_bn1_buffers_running_var_",
+      "target": "G_model_modules_layer4_modules_1_modules_bn1_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_1_modules_bn1_parameters_weight_",
+      "target": "G_model_modules_layer4_modules_1_modules_bn1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_1_modules_bn1_parameters_bias_",
+      "target": "G_model_modules_layer4_modules_1_modules_bn1_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_1_modules_conv2_parameters_weight_",
+      "target": "G_model_modules_layer4_modules_1_modules_conv2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_1_modules_bn2_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer4_modules_1_modules_bn2_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_1_modules_bn2_buffers_running_mean_",
+      "target": "G_model_modules_layer4_modules_1_modules_bn2_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_1_modules_bn2_buffers_running_var_",
+      "target": "G_model_modules_layer4_modules_1_modules_bn2_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_1_modules_bn2_parameters_weight_",
+      "target": "G_model_modules_layer4_modules_1_modules_bn2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_1_modules_bn2_parameters_bias_",
+      "target": "G_model_modules_layer4_modules_1_modules_bn2_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_1_modules_conv3_parameters_weight_",
+      "target": "G_model_modules_layer4_modules_1_modules_conv3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_1_modules_bn3_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer4_modules_1_modules_bn3_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_1_modules_bn3_buffers_running_mean_",
+      "target": "G_model_modules_layer4_modules_1_modules_bn3_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_1_modules_bn3_buffers_running_var_",
+      "target": "G_model_modules_layer4_modules_1_modules_bn3_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_1_modules_bn3_parameters_weight_",
+      "target": "G_model_modules_layer4_modules_1_modules_bn3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_1_modules_bn3_parameters_bias_",
+      "target": "G_model_modules_layer4_modules_1_modules_bn3_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_2_modules_conv1_parameters_weight_",
+      "target": "G_model_modules_layer4_modules_2_modules_conv1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_2_modules_bn1_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer4_modules_2_modules_bn1_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_2_modules_bn1_buffers_running_mean_",
+      "target": "G_model_modules_layer4_modules_2_modules_bn1_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_2_modules_bn1_buffers_running_var_",
+      "target": "G_model_modules_layer4_modules_2_modules_bn1_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_2_modules_bn1_parameters_weight_",
+      "target": "G_model_modules_layer4_modules_2_modules_bn1_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_2_modules_bn1_parameters_bias_",
+      "target": "G_model_modules_layer4_modules_2_modules_bn1_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_2_modules_conv2_parameters_weight_",
+      "target": "G_model_modules_layer4_modules_2_modules_conv2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_2_modules_bn2_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer4_modules_2_modules_bn2_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_2_modules_bn2_buffers_running_mean_",
+      "target": "G_model_modules_layer4_modules_2_modules_bn2_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_2_modules_bn2_buffers_running_var_",
+      "target": "G_model_modules_layer4_modules_2_modules_bn2_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_2_modules_bn2_parameters_weight_",
+      "target": "G_model_modules_layer4_modules_2_modules_bn2_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_2_modules_bn2_parameters_bias_",
+      "target": "G_model_modules_layer4_modules_2_modules_bn2_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_2_modules_conv3_parameters_weight_",
+      "target": "G_model_modules_layer4_modules_2_modules_conv3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_2_modules_bn3_buffers_num_batches_tracked_",
+      "target": "G_model_modules_layer4_modules_2_modules_bn3_buffers_num_batches_tr",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_2_modules_bn3_buffers_running_mean_",
+      "target": "G_model_modules_layer4_modules_2_modules_bn3_buffers_running_mean_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_2_modules_bn3_buffers_running_var_",
+      "target": "G_model_modules_layer4_modules_2_modules_bn3_buffers_running_var_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_2_modules_bn3_parameters_weight_",
+      "target": "G_model_modules_layer4_modules_2_modules_bn3_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_layer4_modules_2_modules_bn3_parameters_bias_",
+      "target": "G_model_modules_layer4_modules_2_modules_bn3_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_fc_parameters_weight_",
+      "target": "G_model_modules_fc_parameters_weight_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "placeholder",
+      "name": "g_model_modules_fc_parameters_bias_",
+      "target": "G_model_modules_fc_parameters_bias_",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "x",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "l_x_",
+        "g_model_modules_conv1_parameters_weight_",
+        "None",
+        "(2, 2)",
+        "(3, 3)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add_",
+      "target": "add_",
+      "args": [
+        "g_model_modules_bn1_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "x_1",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [
+        "x",
+        "g_model_modules_bn1_buffers_running_mean_",
+        "g_model_modules_bn1_buffers_running_var_",
+        "g_model_modules_bn1_parameters_weight_",
+        "g_model_modules_bn1_parameters_bias_",
+        "True",
+        "0.1",
+        "1e-05"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "x_2",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "x_1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "x_3",
+      "target": "<function boolean_dispatch.<locals>.fn at 0x0000029918180C10>",
+      "args": [
+        "x_2",
+        "3",
+        "2",
+        "1",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "x_3",
+        "g_model_modules_layer1_modules_0_modules_conv1_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__1",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer1_modules_0_modules_bn1_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_1",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_2",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_3",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_2",
+        "g_model_modules_layer1_modules_0_modules_conv2_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(1, 1)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__2",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer1_modules_0_modules_bn2_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_4",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_5",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_4"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_6",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_5",
+        "g_model_modules_layer1_modules_0_modules_conv3_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__3",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer1_modules_0_modules_bn3_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_7",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "input_1",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "x_3",
+        "g_model_modules_layer1_modules_0_modules_downsample_modules_0_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__4",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer1_modules_0_modules_downsample_modules_1_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "input_2",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_8",
+      "target": "<built-in function iadd>",
+      "args": [
+        "out_7",
+        "input_2"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_9",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_8"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_10",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_9",
+        "g_model_modules_layer1_modules_1_modules_conv1_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__5",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer1_modules_1_modules_bn1_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_11",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_12",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_11"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_13",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_12",
+        "g_model_modules_layer1_modules_1_modules_conv2_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(1, 1)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__6",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer1_modules_1_modules_bn2_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_14",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_15",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_14"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_16",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_15",
+        "g_model_modules_layer1_modules_1_modules_conv3_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__7",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer1_modules_1_modules_bn3_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_17",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_18",
+      "target": "<built-in function iadd>",
+      "args": [
+        "out_17",
+        "out_9"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_19",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_18"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_20",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_19",
+        "g_model_modules_layer1_modules_2_modules_conv1_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__8",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer1_modules_2_modules_bn1_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_21",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_22",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_21"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_23",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_22",
+        "g_model_modules_layer1_modules_2_modules_conv2_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(1, 1)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__9",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer1_modules_2_modules_bn2_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_24",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_25",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_24"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_26",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_25",
+        "g_model_modules_layer1_modules_2_modules_conv3_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__10",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer1_modules_2_modules_bn3_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_27",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_28",
+      "target": "<built-in function iadd>",
+      "args": [
+        "out_27",
+        "out_19"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_29",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_28"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_30",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_29",
+        "g_model_modules_layer2_modules_0_modules_conv1_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__11",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer2_modules_0_modules_bn1_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_31",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_32",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_31"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_33",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_32",
+        "g_model_modules_layer2_modules_0_modules_conv2_parameters_weight_",
+        "None",
+        "(2, 2)",
+        "(1, 1)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__12",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer2_modules_0_modules_bn2_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_34",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_35",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_34"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_36",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_35",
+        "g_model_modules_layer2_modules_0_modules_conv3_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__13",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer2_modules_0_modules_bn3_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_37",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "input_3",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_29",
+        "g_model_modules_layer2_modules_0_modules_downsample_modules_0_parameters_weight_",
+        "None",
+        "(2, 2)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__14",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer2_modules_0_modules_downsample_modules_1_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "input_4",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_38",
+      "target": "<built-in function iadd>",
+      "args": [
+        "out_37",
+        "input_4"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_39",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_38"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_40",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_39",
+        "g_model_modules_layer2_modules_1_modules_conv1_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__15",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer2_modules_1_modules_bn1_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_41",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_42",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_41"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_43",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_42",
+        "g_model_modules_layer2_modules_1_modules_conv2_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(1, 1)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__16",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer2_modules_1_modules_bn2_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_44",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_45",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_44"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_46",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_45",
+        "g_model_modules_layer2_modules_1_modules_conv3_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__17",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer2_modules_1_modules_bn3_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_47",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_48",
+      "target": "<built-in function iadd>",
+      "args": [
+        "out_47",
+        "out_39"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_49",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_48"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_50",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_49",
+        "g_model_modules_layer2_modules_2_modules_conv1_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__18",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer2_modules_2_modules_bn1_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_51",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_52",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_51"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_53",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_52",
+        "g_model_modules_layer2_modules_2_modules_conv2_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(1, 1)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__19",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer2_modules_2_modules_bn2_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_54",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_55",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_54"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_56",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_55",
+        "g_model_modules_layer2_modules_2_modules_conv3_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__20",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer2_modules_2_modules_bn3_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_57",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_58",
+      "target": "<built-in function iadd>",
+      "args": [
+        "out_57",
+        "out_49"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_59",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_58"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_60",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_59",
+        "g_model_modules_layer2_modules_3_modules_conv1_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__21",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer2_modules_3_modules_bn1_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_61",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_62",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_61"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_63",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_62",
+        "g_model_modules_layer2_modules_3_modules_conv2_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(1, 1)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__22",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer2_modules_3_modules_bn2_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_64",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_65",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_64"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_66",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_65",
+        "g_model_modules_layer2_modules_3_modules_conv3_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__23",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer2_modules_3_modules_bn3_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_67",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_68",
+      "target": "<built-in function iadd>",
+      "args": [
+        "out_67",
+        "out_59"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_69",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_68"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_70",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_69",
+        "g_model_modules_layer3_modules_0_modules_conv1_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__24",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer3_modules_0_modules_bn1_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_71",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_72",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_71"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_73",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_72",
+        "g_model_modules_layer3_modules_0_modules_conv2_parameters_weight_",
+        "None",
+        "(2, 2)",
+        "(1, 1)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__25",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer3_modules_0_modules_bn2_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_74",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_75",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_74"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_76",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_75",
+        "g_model_modules_layer3_modules_0_modules_conv3_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__26",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer3_modules_0_modules_bn3_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_77",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "input_5",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_69",
+        "g_model_modules_layer3_modules_0_modules_downsample_modules_0_parameters_weight_",
+        "None",
+        "(2, 2)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__27",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer3_modules_0_modules_downsample_modules_1_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "input_6",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_78",
+      "target": "<built-in function iadd>",
+      "args": [
+        "out_77",
+        "input_6"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_79",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_78"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_80",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_79",
+        "g_model_modules_layer3_modules_1_modules_conv1_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__28",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer3_modules_1_modules_bn1_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_81",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_82",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_81"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_83",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_82",
+        "g_model_modules_layer3_modules_1_modules_conv2_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(1, 1)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__29",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer3_modules_1_modules_bn2_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_84",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_85",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_84"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_86",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_85",
+        "g_model_modules_layer3_modules_1_modules_conv3_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__30",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer3_modules_1_modules_bn3_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_87",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_88",
+      "target": "<built-in function iadd>",
+      "args": [
+        "out_87",
+        "out_79"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_89",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_88"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_90",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_89",
+        "g_model_modules_layer3_modules_2_modules_conv1_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__31",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer3_modules_2_modules_bn1_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_91",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_92",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_91"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_93",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_92",
+        "g_model_modules_layer3_modules_2_modules_conv2_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(1, 1)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__32",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer3_modules_2_modules_bn2_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_94",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_95",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_94"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_96",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_95",
+        "g_model_modules_layer3_modules_2_modules_conv3_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__33",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer3_modules_2_modules_bn3_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_97",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_98",
+      "target": "<built-in function iadd>",
+      "args": [
+        "out_97",
+        "out_89"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_99",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_98"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_100",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_99",
+        "g_model_modules_layer3_modules_3_modules_conv1_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__34",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer3_modules_3_modules_bn1_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_101",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_102",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_101"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_103",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_102",
+        "g_model_modules_layer3_modules_3_modules_conv2_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(1, 1)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__35",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer3_modules_3_modules_bn2_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_104",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_105",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_104"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_106",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_105",
+        "g_model_modules_layer3_modules_3_modules_conv3_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__36",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer3_modules_3_modules_bn3_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_107",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_108",
+      "target": "<built-in function iadd>",
+      "args": [
+        "out_107",
+        "out_99"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_109",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_108"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_110",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_109",
+        "g_model_modules_layer3_modules_4_modules_conv1_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__37",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer3_modules_4_modules_bn1_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_111",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_112",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_111"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_113",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_112",
+        "g_model_modules_layer3_modules_4_modules_conv2_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(1, 1)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__38",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer3_modules_4_modules_bn2_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_114",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_115",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_114"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_116",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_115",
+        "g_model_modules_layer3_modules_4_modules_conv3_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__39",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer3_modules_4_modules_bn3_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_117",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_118",
+      "target": "<built-in function iadd>",
+      "args": [
+        "out_117",
+        "out_109"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_119",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_118"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_120",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_119",
+        "g_model_modules_layer3_modules_5_modules_conv1_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__40",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer3_modules_5_modules_bn1_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_121",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_122",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_121"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_123",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_122",
+        "g_model_modules_layer3_modules_5_modules_conv2_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(1, 1)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__41",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer3_modules_5_modules_bn2_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_124",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_125",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_124"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_126",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_125",
+        "g_model_modules_layer3_modules_5_modules_conv3_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__42",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer3_modules_5_modules_bn3_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_127",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_128",
+      "target": "<built-in function iadd>",
+      "args": [
+        "out_127",
+        "out_119"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_129",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_128"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_130",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_129",
+        "g_model_modules_layer4_modules_0_modules_conv1_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__43",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer4_modules_0_modules_bn1_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_131",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_132",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_131"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_133",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_132",
+        "g_model_modules_layer4_modules_0_modules_conv2_parameters_weight_",
+        "None",
+        "(2, 2)",
+        "(1, 1)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__44",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer4_modules_0_modules_bn2_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_134",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_135",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_134"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_136",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_135",
+        "g_model_modules_layer4_modules_0_modules_conv3_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__45",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer4_modules_0_modules_bn3_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_137",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "input_7",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_129",
+        "g_model_modules_layer4_modules_0_modules_downsample_modules_0_parameters_weight_",
+        "None",
+        "(2, 2)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__46",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer4_modules_0_modules_downsample_modules_1_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "input_8",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_138",
+      "target": "<built-in function iadd>",
+      "args": [
+        "out_137",
+        "input_8"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_139",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_138"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_140",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_139",
+        "g_model_modules_layer4_modules_1_modules_conv1_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__47",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer4_modules_1_modules_bn1_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_141",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_142",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_141"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_143",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_142",
+        "g_model_modules_layer4_modules_1_modules_conv2_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(1, 1)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__48",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer4_modules_1_modules_bn2_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_144",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_145",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_144"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_146",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_145",
+        "g_model_modules_layer4_modules_1_modules_conv3_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__49",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer4_modules_1_modules_bn3_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_147",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_148",
+      "target": "<built-in function iadd>",
+      "args": [
+        "out_147",
+        "out_139"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_149",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_148"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_150",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_149",
+        "g_model_modules_layer4_modules_2_modules_conv1_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__50",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer4_modules_2_modules_bn1_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_151",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_152",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_151"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_153",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_152",
+        "g_model_modules_layer4_modules_2_modules_conv2_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(1, 1)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__51",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer4_modules_2_modules_bn2_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_154",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_155",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_154"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_156",
+      "target": "<built-in method conv2d of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "out_155",
+        "g_model_modules_layer4_modules_2_modules_conv3_parameters_weight_",
+        "None",
+        "(1, 1)",
+        "(0, 0)",
+        "(1, 1)",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_method",
+      "name": "add__52",
+      "target": "add_",
+      "args": [
+        "g_model_modules_layer4_modules_2_modules_bn3_buffers_num_batches_tracked_",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_157",
+      "target": "<function batch_norm at 0x0000029918182D40>",
+      "args": [],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_158",
+      "target": "<built-in function iadd>",
+      "args": [
+        "out_157",
+        "out_149"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "out_159",
+      "target": "<function relu at 0x0000029918181D80>",
+      "args": [
+        "out_158"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "x_4",
+      "target": "<function adaptive_avg_pool2d at 0x0000029918181870>",
+      "args": [
+        "out_159",
+        "(1, 1)"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "x_5",
+      "target": "<built-in method flatten of type object at 0x00007FFA8FA6E8C0>",
+      "args": [
+        "x_4",
+        "1"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "call_function",
+      "name": "x_6",
+      "target": "<built-in function linear>",
+      "args": [
+        "x_5",
+        "g_model_modules_fc_parameters_weight_",
+        "g_model_modules_fc_parameters_bias_"
+      ],
+      "kwargs": {}
+    },
+    {
+      "opcode": "output",
+      "name": "output",
+      "target": "output",
+      "args": [],
+      "kwargs": {}
+    }
+  ]
+}
