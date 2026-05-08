@@ -24,3 +24,8 @@ With dynamo=True (now the default), torch.onnx.export uses torch.export which:
 Workflow Summary:
 torch.nn.Module + args → torch.jit.trace() → TorchScript Graph → ONNX Export → ONNX Model
 The tracing process internally calls torch.jit._get_trace_graph() which captures operations as nodes, then converts each node to its ONNX equivalent using registered symbolic functions.
+
+## Blog 
+
+1. https://docs.pytorch.org/docs/main/user_guide/torch_compiler/export.html
+2. https://docs.pytorch.org/tutorials/intermediate/torch_export_tutorial.html
