@@ -29,3 +29,38 @@ The tracing process internally calls torch.jit._get_trace_graph() which captures
 
 1. https://docs.pytorch.org/docs/main/user_guide/torch_compiler/export.html
 2. https://docs.pytorch.org/tutorials/intermediate/torch_export_tutorial.html
+
+## Understand how torch generate the code based on the graph
+
+How PyTorch FX Generates Code from a Graph
+The code generation pipeline involves two main files:
+1. graph_module.py - Orchestration Layer
+Key flow: GraphModule → recompile() → Graph.python_code()
+# graph_module.py - recompile() method (line 590)
+def recompile(self) -> PythonCode:
+    python_code = self._graph.python_code(       # <-- delegates to Graph
+        root_module="self",
+        record_func=fx_experimental_config.enrich_profiler_metadata,
+    )
+    self._code = python_code.src                  # <-- extracts generated source
+    cls.forward = _forward_from_src(self._code, ...)  # <-- compiles to method
+2. graph.py - The Actual Code Generator
+The real logic lives in torch/fx/graph.py, specifically in the python_code() method. The core codegen classes are:
+- _PyTreeCodeGen — Handles input/output pytree (nested dict/list) flattening
+- _BoxedCodeGen — Wraps forward in a box for deferred calling
+- _Custom成都CodeGen — Handles user-defined code generation
+The Core Algorithm (from graph.py)
+1. Emit prologue — Generates function signature from in_spec (input structure)
+2. Emit nodes — Iterates graph nodes in topological order, generating Python statements for each op type:
+   - placeholder → function parameter
+   - get_attr → self.xxx
+   - call_function → direct function call
+   - call_module → self.submodule(...)
+   - call_method → obj.method(...)
+   - output → return statement
+3. Emit epilogue — Wraps outputs back into pytree structure using out_spec
+Key Codegen Hooks
+Hook	Purpose
+add_pixel_value(...)	Override how tensor constants are emitted
+add_extra_imports(...)	Add custom imports
+_custom_builtins	Built-in functions/classes injected into generated code
