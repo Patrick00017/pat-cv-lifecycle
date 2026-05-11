@@ -36,7 +36,7 @@ How PyTorch FX Generates Code from a Graph
 The code generation pipeline involves two main files:
 1. graph_module.py - Orchestration Layer
 Key flow: GraphModule → recompile() → Graph.python_code()
-# graph_module.py - recompile() method (line 590)
+### graph_module.py - recompile() method (line 590)
 def recompile(self) -> PythonCode:
     python_code = self._graph.python_code(       # <-- delegates to Graph
         root_module="self",
@@ -64,3 +64,28 @@ Hook	Purpose
 add_pixel_value(...)	Override how tensor constants are emitted
 add_extra_imports(...)	Add custom imports
 _custom_builtins	Built-in functions/classes injected into generated code
+
+How PyTorch FX Generates Python Code from a Graph
+Overall Flow
+Graph.python_code(root_module, ...)
+  ├─ Creates _Namespace (unique variable names)
+  └─> self._codegen._gen_python_code(nodes, root_module, namespace, ...)
+        ├─ Iterates nodes: emit_node(node) for each
+        ├─ Builds function definition
+        └─> Returns PythonCode(src, globals, lineno_map, ...)
+Node Op → Python Code Mapping (via emit_node())
+Op	Generated Code	Example
+placeholder	Function parameter with optional default	x : "dtype[shape]" = torch.randn([3, 4])
+call_method	Method call on first arg	x = input.detach()
+call_function	Function call or infix operator	add_1 = torch.add(x, y) or add_1 = x + y
+call_module	Submodule call via root	linear_1 = self.linear(x, y)
+get_attr	Attribute access	weight = self.linear.weight
+output	Return statement	return output
+Key Codegen Classes
+- CodeGen (base) — Standard function signature generation
+- _PyTreeCodeGen — Handles input/output flattening via tree_flatten_spec / tree_unflatten
+- _BoxedCodeGen — Takes single args_list and extracts via iterator
+Live Memory Optimization
+The codegen also injects = None deletions for values after their last use (computed via reverse traversal), so unused tensors get freed early:
+### After reverse nodes, finds each node's final user
+### Then emits:  result_2 = result_1 = None  # when result_1's last user is done
