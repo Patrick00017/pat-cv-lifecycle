@@ -24,9 +24,12 @@ example_kwargs = {"constant": torch.ones(1, 16, 256, 256)}
 exported_program: ExportedProgram = export(
     M(), args=example_args, kwargs=example_kwargs
 )
+print("exported_program: ")
 print(exported_program)
 # torch.export.save(exported_program, "exported_program.pt2")
+print("graph: ")
 print(exported_program.graph)
+print("graph module: ")
 print(exported_program.graph_module)
 # To run the exported program, we can use the `module()` method
 # print(

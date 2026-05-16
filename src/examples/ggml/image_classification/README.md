@@ -87,5 +87,5 @@ Key Codegen Classes
 - _BoxedCodeGen — Takes single args_list and extracts via iterator
 Live Memory Optimization
 The codegen also injects = None deletions for values after their last use (computed via reverse traversal), so unused tensors get freed early:
-### After reverse nodes, finds each node's final user
-### Then emits:  result_2 = result_1 = None  # when result_1's last user is done
+After reverse nodes, finds each node's final user
+Then emits:  result_2 = result_1 = None  # when result_1's last user is done

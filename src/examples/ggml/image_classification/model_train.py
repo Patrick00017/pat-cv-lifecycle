@@ -6,6 +6,7 @@ from torch import nn
 from torch import optim
 import torch.nn.functional as F
 from torchvision import datasets, transforms, models
+from torch.export import export, ExportedProgram
 
 import sys
 from time import time
@@ -77,6 +78,15 @@ classifier = nn.Sequential(
 )
 model.classifier = classifier
 print(model)
+
+# export graph
+example_args = (torch.randn(1, 3, 256, 256),)
+exported_program: ExportedProgram = export(model, args=example_args)
+print(exported_program.graph_signature)
+print(exported_program.graph)
+# print(exported_program.module_call_graph)
+exit()
+
 # optimizer = optim.Adam(model.classifier.parameters(), lr=lr)
 # criterion = nn.NLLLoss()
 
