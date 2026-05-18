@@ -89,3 +89,14 @@ Live Memory Optimization
 The codegen also injects = None deletions for values after their last use (computed via reverse traversal), so unused tensors get freed early:
 After reverse nodes, finds each node's final user
 Then emits:  result_2 = result_1 = None  # when result_1's last user is done
+
+
+
+
+## PARAMETER vs BUFFER:
+- 
+p_ (PARAMETER): Learnable weights that get updated during training via backpropagation (e.g., conv weights, fc weights/biases, BN weight/bias). In state_dict(), saved/restored.
+- 
+b_ (BUFFER): Non-learnable state, computed during training but not updated by gradients (e.g., running_mean, running_var, num_batches_tracked in BatchNorm). Persists but not optimized.
+num_users=1:
+This is a reference count in the FX graph - how many other operations use this node as input. num_users=1 means this tensor is consumed by exactly one downstream operation. Higher counts (e.g., num_users=2) indicate the tensor is used by multiple operations (common with residual connections where one tensor feeds into two branches).
