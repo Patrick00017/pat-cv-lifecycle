@@ -106,6 +106,12 @@ bool model_init_from_file(const std::string &fname, custom_model &model){
             )
         )
 
+        for input_spec in self.input_specs:
+            print(input_spec.arg.name)  # weight name will be used in the graph
+            print(input_spec.target)  # state_dict weight name
+            # todo: put arg.name into model_structure
+            # todo: load (target) into arg.name
+
     def check_input(self):
         for i in range(5):
             print(self.input_specs[i].kind)  # parameter or buffer, the same in ggml?
@@ -146,5 +152,5 @@ if __name__ == "__main__":
     model = models.resnet50(pretrained=True)
     input_args = (torch.randn(1, 3, 256, 256),)
     tool = AutoGenerateUtils(model=model, input_args=input_args)
-    # tool.check_input()
-    # tool.check_graph()
+    tool.check_input()
+    tool.check_graph()
