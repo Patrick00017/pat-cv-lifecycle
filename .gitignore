@@ -11,3 +11,4 @@ src/pat_cv_lifecycle.egg-info
 *.png
 *.onnx
 *.pt
+*.jpg

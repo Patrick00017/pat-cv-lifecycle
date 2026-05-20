@@ -99,18 +99,45 @@ bool model_init_from_file(const std::string &fname, custom_model &model){
     return true;
 }
         """
-        ggml_startup_template = Template(ggml_code_startup_template_str)
-        print(
-            ggml_startup_template.substitute(
-                model_struct="aaa\n", weight_load_process="bbb\n"
-            )
-        )
 
+        # 1. load all graph node names and state dict names
+        graph_weight_names = []  # use to save the node name in the graph
+        state_dict_weight_names = []  # use to save the weight name in the state dict
         for input_spec in self.input_specs:
             print(input_spec.arg.name)  # weight name will be used in the graph
             print(input_spec.target)  # state_dict weight name
-            # todo: put arg.name into model_structure
-            # todo: load (target) into arg.name
+            graph_weight_names.append(input_spec.arg.name)
+            state_dict_weight_names.append(input_spec.target)
+
+        # 2. generate the model structure
+        ggml_model_weight_names_code = ""
+        for param_name in graph_weight_names:
+            ggml_model_weight_names_code += f"\tstruct ggml_tensor* {param_name};\t\n"
+
+        model_structure_code = f"""
+struct custom_model {{
+    ggml_backend_t backend;
+    ggml_backend_buffer_t buffer;
+    struct ggml_context *ctx;
+    
+    // generated weight names
+    {ggml_model_weight_names_code}
+}};
+        """
+
+        # 3. load weight from state dict
+        weight_load_process_code = ""
+        for index, state_dict_name in enumerate(state_dict_weight_names):
+            ggml_model_weight_name = graph_weight_names[index]
+            weight_load_process_code += f"""model.{ggml_model_weight_name} = ggml_get_tensor(model.ctx, "{state_dict_name}");\t\n"""
+
+        # 4. load to the total code
+        ggml_startup_template = Template(ggml_code_startup_template_str)
+        ggml_startup_code = ggml_startup_template.substitute(
+            model_struct=model_structure_code,
+            weight_load_process=weight_load_process_code,
+        )
+        return ggml_startup_code
 
     def check_input(self):
         for i in range(5):
@@ -152,5 +179,5 @@ if __name__ == "__main__":
     model = models.resnet50(pretrained=True)
     input_args = (torch.randn(1, 3, 256, 256),)
     tool = AutoGenerateUtils(model=model, input_args=input_args)
-    tool.check_input()
-    tool.check_graph()
+    # tool.check_input()
+    # tool.check_graph()
